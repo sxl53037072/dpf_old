@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dpf.dao.hotproduct.ProductSellDao">		
+	<select id="productSellSelect" resultType="java.util.HashMap">
+	    <![CDATA[		        
+			  SELECT A.PID,
+			       A.PRODUCT_CODE,
+			       A.PRODUCT_NAME,
+			       A.PRODUCT_TYPE,
+			       (select note from crmii.txtdm where FLDM='PRODUCT' and ibm = a.product_type) PRODUCT_TYPE_COVER,
+			       A.RECOMMEND_REASON,
+			       A.NAV_LASTEST,
+			       A.RRINTHREEMONTH,
+			       A.NAV_DATE,
+			       A.INTRODUCION,
+			       A.INTRODUCION_MOBILE,
+			       A.HOTSELL_FLAG,
+			       A.NEWSELL_FLAG,
+			       A.RECOMMEND_FLAG,
+			       A.IMGID,
+			       A.STATUS_FLAG
+			  FROM CRMII.T_PRODUCT_SELL_ALL A
+			]]>               
+	</select>	
+	
+</mapper>
