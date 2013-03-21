@@ -8,7 +8,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * <p>
- * company：兴业证券版权所有
+ * company：兴业证券版权所有22
  * </p>
  * <Description>描述:</p>
  * <p>
