@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.dpf.dao.hotproduct.ProductSellDao;
+import com.dpf.domain.Paging;
+import com.dpf.util.JsonBiz;
 
 
 /**
  * <p>
- * company：兴业证券版权所有
+ * company：
  * </p>
  * <Description>描述:</p>
  * <p>
@@ -29,9 +31,9 @@ public class ProductSellService {
 			.getLogger(ProductSellService.class.getName());
 	@Autowired
 	private ProductSellDao productSellDao;
-	public void productSellSelect() {
+	public Object productSellSelect(Paging p) {
 		List<Map<String, Object>> list = productSellDao.productSellSelect();
-		System.out.println("list_size="+list.size());
+		return JsonBiz.getJsonDataForJQGridUi(list, productSellDao.productSellSelectCount(), p);
 	}
 
 }

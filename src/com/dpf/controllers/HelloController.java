@@ -6,7 +6,7 @@ import net.paoding.rose.web.Invocation;
 
 /**
  * <p>
- * company：兴业证券版权所有
+ * company：
  * </p>
  * <Description>描述:</p>
  * <p>

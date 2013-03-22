@@ -14,6 +14,5 @@ package com.dpf.util;
  */
 public class DataUtil {
 	
-	
-	public static String ss = "";
+	public String ss = "";
 }

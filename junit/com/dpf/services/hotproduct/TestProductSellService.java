@@ -28,7 +28,7 @@ public class TestProductSellService {
 	
 	@Test
 	public void TestProductSellSelect(){
-		productSellService.productSellSelect();
+		productSellService.productSellSelect(null);
 	}
 
 }

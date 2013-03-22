@@ -9,7 +9,7 @@ import org.apache.log4j.Logger;
 
 /**
  * <p>
- * company：兴业证券版权所有
+ * company：
  * </p>
  * <Description>描述:队列线程池</p>
  * <p>

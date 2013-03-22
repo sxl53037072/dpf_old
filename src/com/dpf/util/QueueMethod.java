@@ -2,7 +2,7 @@ package com.dpf.util;
 
 /**
  * <p>
- * company：兴业证券版权所有
+ * company：
  * </p>
  * <Description>描述:执行队列接口</p>
  * <p>

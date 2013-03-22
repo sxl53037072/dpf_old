@@ -19,7 +19,12 @@ import java.util.Map;
 public interface ProductSellDao {                          
 	/**
 	 * 功能：查询热销产品表
-	 * @return 返回条数
+	 * @return 返回记录
 	 */
 	public List<Map<String, Object>>  productSellSelect();
+	/**
+	 * 功能：查询热销产品表记录数
+	 * @return 返回条数
+	 */
+	public int  productSellSelectCount();
 }

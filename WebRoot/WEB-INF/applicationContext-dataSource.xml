@@ -16,7 +16,7 @@
 		<!-- 详细参数说明参见database-config.properties -->
 		<property name="initialPoolSize" value="10"></property>
 		<property name="minPoolSize" value="5"></property>
-		<property name="maxPoolSize" value="1000"></property>
+		<property name="maxPoolSize" value="300"></property>
 <!-- 		##每60秒检查所有连接池中的空闲连接。Default: 0 -->
 <!-- 		<property name="maxIdleTime" value="60"></property> -->
 <!-- 		<property name="acquireIncrement" value="5"></property> -->
