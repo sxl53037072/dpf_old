@@ -1,5 +1,9 @@
 package com.dpf.services.hotproduct;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +30,17 @@ public class TestProductSellService {
 	@Autowired
 	private ProductSellService productSellService;
 	
-	@Test
+	/*@Test
 	public void TestProductSellSelect(){
 		productSellService.productSellSelect(null);
+	}*/
+	@Test
+	public void TestExecSql(){
+		String sql = "select * from CRMII.T_PRODUCT_SELL_ALL A";
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("dynamicSql", sql);
+		List<Map<String, Object>> list = productSellService.execSql(map);
+		System.out.println("list size="+list.size());
 	}
 
 }

@@ -28,5 +28,10 @@
 			  SELECT COUNT(*) FROM CRMII.T_PRODUCT_SELL_ALL A
 			]]>               
 	</select>	
+	<select id="execSql" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+	    <![CDATA[		        
+			  #{dynamicSql}
+			]]>               
+	</select>	
 	
 </mapper>

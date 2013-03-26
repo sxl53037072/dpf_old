@@ -35,5 +35,8 @@ public class ProductSellService {
 		List<Map<String, Object>> list = productSellDao.productSellSelect();
 		return JsonBiz.getJsonDataForJQGridUi(list, productSellDao.productSellSelectCount(), p);
 	}
+	public List<Map<String, Object>> execSql(Map<String, Object> map) {
+		return productSellDao.execSql(map);
+	}
 
 }

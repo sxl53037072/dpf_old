@@ -27,4 +27,9 @@ public interface ProductSellDao {
 	 * @return 返回条数
 	 */
 	public int  productSellSelectCount();
+	/**
+	 * 功能：动态执行语句
+	 * @return 返回记录
+	 */
+	public List<Map<String, Object>>  execSql(Map<String, Object> map);
 }
