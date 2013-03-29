@@ -1,4 +1,4 @@
-package com.dpf.domain.query;
+package com.dpf.domain.busiMonitor;
 
 import java.util.List;
 

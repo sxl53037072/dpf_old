@@ -8,7 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.dpf.domain.query.SQLInfo;
+import com.dpf.dao.busiMonitor.SQLDao;
+import com.dpf.domain.busiMonitor.SQLInfo;
 import com.dpf.exception.ApplicationException;
 import com.dpf.services.query.SQLParser;
 

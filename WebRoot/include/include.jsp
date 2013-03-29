@@ -15,6 +15,7 @@ String rootPath = request.getContextPath();
 <script type="text/javascript" src="<%=rootPath%>/js/full/jquery-ui/jquery.ui.button.js"></script>
 <script type="text/javascript" src="<%=rootPath%>/js/full/jquery.validationEngine.js"></script>
 <script type="text/javascript" src="<%=rootPath%>/js/full/jquery.validationEngine-zh_CN.js"></script>
+<script type="text/javascript" src="<%=rootPath%>/js/full/busiMonitor/ResultGrid.js"></script>
 
 <link rel="stylesheet" type="text/css"	href="<%=rootPath%>/js/full/jqGrid/themes/redmond/jquery-ui-1.8.2.custom.css" />
 <link rel="stylesheet" type="text/css"	href="<%=rootPath%>/js/full/jqGrid/themes/ui.jqgrid.css" />
