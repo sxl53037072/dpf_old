@@ -31,7 +31,7 @@ public class TestSQLDao {
 	
 	@Test
 	public void testGetSqlInfo() throws ApplicationException{
-		SQLInfo SQLInfo = SQLDao.getSqlInfo(1);
+		SQLInfo SQLInfo = SQLDao.getSqlInfo("1");
 		System.out.println("sql="+SQLInfo.getSqlText());
 		SQLParser sqlParser = new SQLParser();
 		sqlParser.setSql(SQLInfo.getSqlText());

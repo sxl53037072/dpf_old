@@ -1,11 +1,21 @@
 package com.dpf.util;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+
+import com.dpf.domain.Paging;
 
 /**
  * json数据转换工具类
@@ -46,6 +56,50 @@ public class JsonUtil {
 	public static String objectToJson(Object obj){
 		JSONArray json = JSONArray.fromObject(obj);
 		return json.toString();
+	}
+	
+	public static Element jsonToXml(Map map){
+		JSONObject json = JSONObject.fromObject(map);
+		Iterator it = json.entrySet().iterator();
+		Element paramElement = DocumentHelper.createElement("params");
+		while(it.hasNext()){
+			Map.Entry entry = (Map.Entry) it.next(); 
+			Element param = paramElement.addElement("param");
+	        param.addAttribute("name", String.valueOf(entry.getKey()));
+	        param.addAttribute("type", "STRING");
+	        param.setText(String.valueOf(entry.getValue()));	        
+		}
+		return paramElement;
+	}
+	public static String rsToJqGrid(ResultSet rs,int totalCount,Paging p){
+		List<HashMap<String, String>> rows = new ArrayList<HashMap<String, String>>();
+		try {
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int columnCount = rsmd.getColumnCount();
+			while (rs.next()) {
+				HashMap<String, String> map = new HashMap<String, String>();
+				for (int i = 0; i < columnCount; i++) {
+					map.put(rsmd.getColumnName(i + 1), rs.getString(i + 1));
+				}
+				rows.add(map);
+			}
+			JSONObject jsonObject = JsonBiz.getJsonDataForJQGridUi(rows, totalCount, p);
+			return jsonObject.toString();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBCtrl.close(null, rs);
+		}
+		return null;
+	}
+	
+	
+	public static void main(String[] args){
+		HashMap map = new HashMap();
+		map.put("kkk", "ee");
+		map.put("oo", "bb");
+		Element p = jsonUtil.jsonToXml(map);
+		System.out.println("xml="+p.asXML());
 	}
 	
 }

@@ -1,4 +1,11 @@
 package com.dpf.util;
+
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * <p>
  * company：
@@ -14,5 +21,44 @@ package com.dpf.util;
  */
 public class DataUtil {
 	
-	public String ss = "";
+	/**
+	 * 功能:	判断是否为空值
+	 *
+	 * @param sourceStr  字符串
+	 * @return  true/false 是否为空值
+	 */
+	public static boolean isNullOrEmpty(String sourceStr){
+		boolean isNull = false;
+		if(null == sourceStr || "".equals(sourceStr.trim()) || "null".equals(sourceStr))
+			isNull = true;
+		return isNull;
+	}
+
+	/**
+	 * 功能:	空值null 返回 ""
+	 *
+	 * @param sourceStr
+	 * @return 空值返回""
+	 */
+	public static String nullToStr(String sourceStr) {
+		if(null != sourceStr && !sourceStr.equals("")){
+			sourceStr = sourceStr.trim();
+		}
+		if ((sourceStr == null) || sourceStr.equals("")
+				|| sourceStr.equals("null")) {
+			sourceStr = "";
+		}
+		return sourceStr;
+	}
+	
+	public static Map requestToMap(HttpServletRequest request){
+		Map map = new HashMap();
+		Enumeration pNames = request.getParameterNames();
+		while (pNames.hasMoreElements()) {
+			String name = (String) pNames.nextElement();
+			String value = request.getParameter(name);
+			map.put(name, value);
+		}
+		return map;
+	}
 }
