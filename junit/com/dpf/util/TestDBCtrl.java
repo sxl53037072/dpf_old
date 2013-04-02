@@ -50,6 +50,7 @@ public class TestDBCtrl {
 	}*/
 	@Test
 	public void testGetConnect(){
+		System.out.println("in home upload");
 		Connection conn = DBCtrl.getConnection();
 		try {
 			PreparedStatement pstm = conn.prepareStatement("select a.product_name from crmii.t_product_sell_all a");
