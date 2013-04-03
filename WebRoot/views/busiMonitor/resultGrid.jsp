@@ -5,11 +5,44 @@
 	   <title>查询</title>
 	   <%@ include file="../../include/include.jsp" %>
 	   <script>
-		   jQuery(function(){			      			   
+	   		
+	   
+		   jQuery(function(){	
 			   jQuery('#productSellListGrid').ResultGrid({
+				   result : "1",
+				   resultParam : {"status_flag": "3"},
+				   caption:"热销产品",
+				   colModel:[
+						{label: '状态', name:'STATUS_FLAG_NAME',index:'STATUS_FLAG_NAME', width:80, align:'right', sortable:false, formatter:function(cellvalue, options, rowObject){
+							switch(rowObject.STATUS_FLAG+""){
+								case "0":
+									return "发布审核中";
+								case "1":
+									return "已发布";	
+								case "2":
+									return "已失效";	
+								case "3":
+									return "草稿";	
+								case "4":
+									return "失效审核中";		
+							}
+						}},
+						{label: '推荐理由', name:'RECOMMEND_REASON',index:'RECOMMEND_REASON', width:300, align:'left', sortable:false},
+						{name:'STATUS_FLAG',index:'STATUS_FLAG', hidden:true}
+			       ],
+				   pager:'#productSellListGrid_pager'
+			   });
+			   $("#refGrid").on("click", function(){
+				   jQuery('#productSellListGrid').setGridParam({"page":1});
+				   jQuery('#productSellListGrid').setGridParam({"postData":{"status_flag": "1"}});
+				   jQuery('#productSellListGrid').trigger("reloadGrid");	
+			   })
+			   
+			   
+			   /* jQuery('#productSellListGrid').ResultGrid({
 // 					multiselect:false,
 					result : "1",
-					resultParam : {"status_flag": "2"},
+					resultParam : {"status_flag": "3"},
 					checkboxSingle:true,
 					mtype:'post',
 		            colModel:[
@@ -72,7 +105,7 @@
 		    	    	
 		    	    }
 		    	    
-				});			
+				});	 */		
 			   //productSell.init();			   
 		   });
 		 
@@ -121,7 +154,7 @@
 	</head>	
 	<body >
 	<div id="titleBarDiv" class="pageTitle" style="left: 0px; top: 0px;">
-		<h2><em>热销产品</em></h2>
+		<h2><em>热销产品<input type="button" id="refGrid" value="ref" /></em></h2>
 	</div>
 	<div id="toolBarDiv" class="pageTool" style="left: 0px; top: 26px;"></div>	
 	<div class="group">

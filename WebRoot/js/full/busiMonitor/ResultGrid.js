@@ -1,4 +1,4 @@
-$.fn.ResultGrid = function(options){
+$.fn.ResultGrid = function(options){	
 	var GET_DATA_URL = "result/";
 	var $grid = $(this);
 	var resultGrid_default = {
@@ -24,7 +24,7 @@ $.fn.ResultGrid = function(options){
 				if(setting.callback)setting.callback(data);
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown){
-				alert("error msg ="+textStatus+"_"+errorThrown);
+				alert("error getData ="+textStatus+"_"+errorThrown);
 			}
 		});
 		return data;
@@ -38,25 +38,10 @@ $.fn.ResultGrid = function(options){
 		//var jqData = getData({url:GET_DATA_URL+"list/"+options.result,data:options.resultParam});	
 		var postData = options.resultParam || {};
 		var jqObj = $.extend(true, {}, resultGrid_default, options, {"url":GET_DATA_URL+"list/"+options.result,"postData":postData});
-		jqObj["colModel"] = $.merge(options.colModel, colModel);
+		jqObj["colModel"] = $.merge(colModel || [], options.colModel || []);
 		$grid.jqGrid(jqObj);
-//		$grid.jqGrid({
-//			hidegrid : true,
-//			multiselect : false,
-//			mtype : 'post',
-//			loadui : "block",
-//			url : GET_DATA_URL+"list/"+options.result,
-//			remoteSort : false,
-//			shrinkToFit:false,
-//			colModel : colModel,
-//			pager : options.pager
-//		});
-		
-		//$grid.jqGrid("clearGridData");
-		//$grid.jqGrid({"addJSONData":jqData});
-		//$grid[0].addJSONData(jqData);
-		
 	}else{
 		alert("miss result");
 	}
 };
+//$.extend($.fn.ResultGrid,$.fn.jqGrid);

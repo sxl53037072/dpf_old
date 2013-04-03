@@ -25,6 +25,8 @@ import com.dpf.exception.SystemException;
 import com.dpf.services.query.ParamInfo;
 import com.dpf.services.query.SQLParser;
 import com.dpf.util.DBCtrl;
+import com.dpf.util.DataUtil;
+import com.dpf.util.JsonBiz;
 import com.dpf.util.JsonUtil;
 public class SQLResult {		
 	private SQLInfo sqlInfo = new SQLInfo();
@@ -39,6 +41,9 @@ public class SQLResult {
 			SystemException {
 		// int sqlId = Integer.parseInt(this.resultNode.attributeValue("id"));
 		this.sqlInfo = SQLDao.getSqlInfo(key);
+		if(DataUtil.isNullOrEmpty(this.sqlInfo.getSqlType())){
+			throw new ApplicationException("未找到指定ID的自定义查询:"+key);
+		}
 		if (this.sqlInfo.getSqlType().equals(SQLInfo.SQL)) {
 			this.action = new ExecuteSQL();
 		} else {
@@ -68,10 +73,10 @@ public class SQLResult {
 			return JsonUtil.rsToJqGrid(rs, totalCount, paging);
 		}catch(Exception e){
 			e.printStackTrace();
+			return JsonBiz.isSucceed(false, e.toString()).toString();
 		}finally{
 			DBCtrl.close(conn, rs);
 		}
-		return null;
 		
 	}
 
