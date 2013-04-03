@@ -51,6 +51,12 @@ public class DataUtil {
 		return sourceStr;
 	}
 	
+	/**
+	 * 功能:	request参数集转Map
+	 *
+	 * @param request
+	 * @return
+	 */
 	public static Map requestToMap(HttpServletRequest request){
 		Map map = new HashMap();
 		Enumeration pNames = request.getParameterNames();

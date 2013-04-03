@@ -79,7 +79,7 @@ public class JsonUtil {
 			while (rs.next()) {
 				HashMap<String, String> map = new HashMap<String, String>();
 				for (int i = 0; i < columnCount; i++) {
-					map.put(rsmd.getColumnName(i + 1), rs.getString(i + 1));
+					map.put(rsmd.getColumnName(i + 1), DataUtil.nullToStr(rs.getString(i + 1)));
 				}
 				rows.add(map);
 			}

@@ -32,7 +32,7 @@ public class SQLDao {
 	
 	private static final String SQL_GET_SQL_TEXT = "SELECT B.SQL_ID, B.SQL_TEXT, B.SQL_TYPE, B.CURSOR_INDEX FROM GET_VALUE_CFG A, SQL_CFG B WHERE A.GET_VALUE_ID = B.SQL_ID AND A.GET_VALUE_CFG_ID = ?";
 	
-	private static final String SQL_GET_FIELD = "SELECT upper(NAME) name,LABEL,WIDTH FROM GET_VALUE_CFG_FIELD WHERE GET_VALUE_CFG_ID = ? ORDER BY SORT_ID";
+	private static final String SQL_GET_FIELD = "SELECT upper(NAME) name,LABEL,WIDTH,CONFIG_SCRIPT FROM GET_VALUE_CFG_FIELD WHERE GET_VALUE_CFG_ID = ? ORDER BY SORT_ID";
 	
 	/**
 	 * 功能:	获取自定义查询的SQL
@@ -72,7 +72,7 @@ public class SQLDao {
 	 * @throws ApplicationException
 	 * @throws SystemException
 	 */
-	public static String getFieldJson(String key) throws ApplicationException,
+	public static List<HashMap<String, String>> getFieldJson(String key) throws ApplicationException,
 			SystemException {
 		List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 		PreparedStatement pstmt = null;
@@ -88,6 +88,7 @@ public class SQLDao {
 				map.put("name",  rs.getString("NAME"));
 				map.put("label", rs.getString("LABEL"));
 				map.put("width", rs.getString("WIDTH"));
+				map.put("CONFIG_SCRIPT", rs.getString("CONFIG_SCRIPT"));				
 				list.add(map);
 			}
 		}catch(Exception e){
@@ -95,6 +96,6 @@ public class SQLDao {
 		}finally{
 			DBCtrl.close(conn, rs, pstmt);
 		}
-		return JsonUtil.listToJson(list);
+		return list;//JsonUtil.listToJson(list);
 	}
 }

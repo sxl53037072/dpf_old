@@ -25,13 +25,13 @@ public class ExecuteSQL implements ExecuteSQLAction
     {
         try
         {
-            // System.out.println("**************************************");
-            // System.out.println("sql=" + sql);
+             System.out.println("**************************************");
+             System.out.println("sql=" + sql);
             PreparedStatement pstmt = conn.prepareStatement(sql);
             for (int i = 0; i < paramList.size(); i++)
             {
                 ParamInfo v = (ParamInfo) paramList.get(i);
-                // System.out.println(i + "=" + v.getValue());
+                 System.out.println(i + "=" + v.getValue());
                 pstmt.setObject(i + 1, v.getValue(), v.getType());
             }
             return pstmt.executeQuery();

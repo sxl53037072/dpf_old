@@ -9,9 +9,9 @@
 			   jQuery('#productSellListGrid').ResultGrid({
 // 					multiselect:false,
 					result : "1",
+					resultParam : {"status_flag": "2"},
 					checkboxSingle:true,
 					mtype:'post',
-					url:"product/list",
 		            colModel:[
 							{name:'PID',index:'PID', hidden:true, key:true},  
 							{label: '产品代码', name:'PRODUCT_CODE',index:'PRODUCT_CODE', width:80, align:'left', sortable:false},
@@ -39,16 +39,16 @@
 								return data;
 							}},
 							{label: '状态', name:'STATUS_FLAG_NAME',index:'STATUS_FLAG_NAME', width:80, align:'right', sortable:false, formatter:function(cellvalue, options, rowObject){
-								switch(rowObject.STATUS_FLAG){
-									case 0:
+								switch(rowObject.STATUS_FLAG+""){
+									case "0":
 										return "发布审核中";
-									case 1:
+									case "1":
 										return "已发布";	
-									case 2:
+									case "2":
 										return "已失效";	
-									case 3:
+									case "3":
 										return "草稿";	
-									case 4:
+									case "4":
 										return "失效审核中";		
 								}
 							}},
@@ -233,7 +233,7 @@
 			        </tr>
 			        <tr>
 			          <td width="91%"><b>请选择上传的文件：</b><br>			           
-			            <input id="file1" name="file1" type="file" size="35" onkeydown="return false;">
+			            <input id="file1" name="file1" type="file" size="35">
 			            <br>
 			            <div style="color:#ff0000">请上传的后缀为jpg,gif,png的图片[120*120]</div>
 			          </td>

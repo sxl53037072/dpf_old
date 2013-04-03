@@ -64,7 +64,7 @@ public class SQLResult {
 			this.buildSQL((String)map.get("resultKey"));
 			totalCount = this.action.getTotalCount(conn, this.sqlInfo);
 			this.buildPageSQL();
-			rs = this.action.execute(conn, this.sqlInfo);			
+			rs = this.action.execute(conn, this.sqlInfo);	
 			return JsonUtil.rsToJqGrid(rs, totalCount, paging);
 		}catch(Exception e){
 			e.printStackTrace();

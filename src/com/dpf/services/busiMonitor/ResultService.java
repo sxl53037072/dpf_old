@@ -4,6 +4,8 @@ import java.sql.Connection;
 
 import javax.servlet.http.HttpServletRequest;
 
+import net.sf.json.JSONObject;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,8 @@ import com.dpf.exception.SystemException;
 import com.dpf.services.query.SQLParser;
 import com.dpf.util.DBCtrl;
 import com.dpf.util.DataUtil;
+import com.dpf.util.JsonBiz;
+import com.dpf.util.JsonUtil;
 /**************************************************
  * Copyright (c) 2013.
  * 文件名称: ResultService.java
@@ -27,11 +31,11 @@ import com.dpf.util.DataUtil;
 public class ResultService {
 	private static Logger logger = Logger
 			.getLogger(ResultService.class.getName());
-	public String getField(String key) throws ApplicationException, SystemException{
-		return SQLDao.getFieldJson(key);
+	public Object getField(String key) throws ApplicationException, SystemException{
+		return JsonBiz.getJsonDataForOption(SQLDao.getFieldJson(key));		
 	}
-	public String getPageResultJson(HttpServletRequest request) throws ApplicationException, SystemException{
+	public Object getPageResultJson(HttpServletRequest request) throws ApplicationException, SystemException{
 		SQLResult sqlResult = new SQLResult();
-		return sqlResult.getPageResultJson(DataUtil.requestToMap(request));
+		return JSONObject.fromObject(sqlResult.getPageResultJson(DataUtil.requestToMap(request)));
 	}
 }
