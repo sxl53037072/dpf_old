@@ -92,6 +92,27 @@ public class JsonUtil {
 		}
 		return null;
 	}
+	public static String rsToColMode(ResultSet rs){
+		List<HashMap<String, String>> colMode = new ArrayList<HashMap<String, String>>();
+		try {
+			ResultSetMetaData rsmd = rs.getMetaData();
+			int count = rsmd.getColumnCount();  
+			for (int i = 1; i <= count; i++){  
+				HashMap<String, String> map = new HashMap<String, String>();
+				map.put("name", rsmd.getColumnName(i).toUpperCase());
+				map.put("label", rsmd.getColumnName(i).toUpperCase());
+				map.put("index", rsmd.getColumnName(i).toUpperCase());
+				colMode.add(map);
+			} 
+			JSONObject jsonObject = JsonBiz.getJsonDataForOption(colMode);
+			return jsonObject.toString();			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DBCtrl.close(null, rs);
+		}
+		return null;
+	}
 	
 	
 	public static void main(String[] args){

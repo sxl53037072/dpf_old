@@ -58,8 +58,7 @@ public class SQLResult {
 		// System.out.println(this.resultNode.asXML());
 	}
 	
-	public String getPageResultJson(Map map) throws ApplicationException,
-			SystemException {
+	public String getPageResultJson(Map map){
         int totalCount = 0;
         this.resultNode = JsonUtil.jsonToXml(map);
         Connection conn = null;
@@ -78,6 +77,23 @@ public class SQLResult {
 			DBCtrl.close(conn, rs);
 		}
 		
+	}
+	public String getColumnModel(Map map){
+        this.resultNode = JsonUtil.jsonToXml(map);
+        Connection conn = null;
+        ResultSet rs = null;
+		try{
+			conn = DBCtrl.getConnection();
+			this.buildSQL((String)map.get("resultKey"));
+			this.buildPageSQL();
+			rs = this.action.execute(conn, this.sqlInfo);	
+			return JsonUtil.rsToColMode(rs);
+		}catch(Exception e){
+			e.printStackTrace();
+			return JsonBiz.isSucceed(false, e.toString()).toString();
+		}finally{
+			DBCtrl.close(conn, rs);
+		}
 	}
 
 	private void buildPageSQL() {

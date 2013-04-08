@@ -57,6 +57,33 @@ public class ResultController {
 		}
 		return null;
 	}
+
+	@Post("dataColModel/{resultKey}")
+	public Object queryDataColModel(@Param("resultKey") String id, Invocation inv){
+		try {			
+			return resultService.getColModel(inv.getRequest());
+		} catch (ApplicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	@Post("valueCfg/{resultKey}")
+	public Object queryValueCfg(@Param("resultKey") String id, Invocation inv){
+		try {			
+			return resultService.getValueCfg(id);
+		} catch (ApplicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	@Get
 	public String resultGrid(Invocation inv,Paging page){
 		return "resultGrid";

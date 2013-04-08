@@ -12,7 +12,7 @@
 				   result : "1",
 				   resultParam : {"status_flag": "3"},
 				   caption:"热销产品",
-				   colModel:[
+				   /* colModel:[
 						{label: '状态', name:'STATUS_FLAG_NAME',index:'STATUS_FLAG_NAME', width:80, align:'right', sortable:false, formatter:function(cellvalue, options, rowObject){
 							switch(rowObject.STATUS_FLAG+""){
 								case "0":
@@ -29,7 +29,7 @@
 						}},
 						{label: '推荐理由', name:'RECOMMEND_REASON',index:'RECOMMEND_REASON', width:300, align:'left', sortable:false},
 						{name:'STATUS_FLAG',index:'STATUS_FLAG', hidden:true}
-			       ],
+			       ], */
 				   pager:'#productSellListGrid_pager'
 			   });
 			   $("#refGrid").on("click", function(){

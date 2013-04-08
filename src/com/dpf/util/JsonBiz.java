@@ -91,7 +91,7 @@ public class JsonBiz {
 			JSONObject dataObj = new JSONObject();
 			JSONArray dataArr = new JSONArray();
 			
-            if(list != null){	
+            if(list != null && list.size() > 0){	
 				for(Object o :list){
 					if(o != null){
 						Class  c=o.getClass();
