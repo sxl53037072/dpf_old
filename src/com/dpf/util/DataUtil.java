@@ -76,19 +76,4 @@ public class DataUtil {
 		}
 		return map;
 	}
-	public static HashMap<String, String> rsToMap(ResultSet rs){
-		HashMap<String, String> returnMap = new HashMap<String, String>();
-		try {
-			ResultSetMetaData rsmd = rs.getMetaData();
-			int columnCount = rsmd.getColumnCount();
-			for (int i = 0; i < columnCount; i++) {
-				returnMap.put(rsmd.getColumnName(i + 1).toUpperCase(), DataUtil.nullToStr(rs.getString(i + 1)));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {			
-			DBCtrl.close(null, rs);			
-		}
-		return returnMap;	
-	}
 }

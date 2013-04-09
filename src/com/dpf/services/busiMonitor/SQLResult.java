@@ -47,7 +47,7 @@ public class SQLResult {
 		if (this.sqlInfo.getSqlType().equals(SQLInfo.SQL)) {
 			this.action = new ExecuteSQL();
 		} else {
-			//this.action = new ExecuteProc();
+			this.action = new ExecuteProc();
 		}
 		SQLParser sqlParser = new SQLParser();
 		sqlParser.setParamElement(this.resultNode);
@@ -67,7 +67,9 @@ public class SQLResult {
 			conn = DBCtrl.getConnection();
 			this.buildSQL((String)map.get("resultKey"));
 			totalCount = this.action.getTotalCount(conn, this.sqlInfo);
-			this.buildPageSQL();
+			if (this.sqlInfo.getSqlType().equals(SQLInfo.SQL)) {
+				this.buildPageSQL();
+			}
 			rs = this.action.execute(conn, this.sqlInfo);	
 			return JsonUtil.rsToJqGrid(rs, totalCount, paging);
 		}catch(Exception e){

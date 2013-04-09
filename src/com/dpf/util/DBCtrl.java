@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 
 public class DBCtrl {
 	private static String DB_NAME = "ds-dpf";
+	private static String DB_TYPE = "ORACLE";
 
 	private static boolean isConnectByTomcat = true;
 
@@ -86,11 +87,18 @@ public class DBCtrl {
 			password = PropertiesUtil.getProperty("db.password");
 
 			try {
-				DriverManager.registerDriver(new OracleDriver());
+				if(DB_TYPE.equals("ORACLE")){
+					DriverManager.registerDriver(new OracleDriver());
+				}else if(DB_TYPE.equals("ACCESS")){
+					Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");  
+				}
 				conn = DriverManager.getConnection(url, username, password);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				logger.error("连接数据库失败", e);
+			} catch (ClassNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 

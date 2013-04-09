@@ -1,24 +1,30 @@
 var ResultGrid = {
 	local : "",
-	setValueCfg : function(valueCfg, jqObj, $grid){
-		if(valueCfg["TITLE"] != ""){
-			jqObj["caption"] = valueCfg["TITLE"];
+	_isNull : function(str){
+		if(str == "" || str == "undefined" || str == null || str == "null"){
+			return true;
 		}
-		if(valueCfg["IS_PAGE"] == "0BF"){
+		return false;
+	},
+	setValueCfg : function(valueCfg, jqObj, $grid){
+		if(!ResultGrid._isNull(valueCfg["title"])){
+			jqObj["caption"] = valueCfg["title"];
+		}
+		if(valueCfg["is_page"] == "0BF"){
 			jqObj["pager"] = "";
 		}else{
 			jqObj["pager"] = jqObj["pager"]?jqObj["pager"]:$grid.attr("id")+"_pager";
 		}
-		if(valueCfg["PAGE_SIZE"] != ""){
-			jqObj["rowNum"] = valueCfg["PAGE_SIZE"];
+		if(!ResultGrid._isNull(valueCfg["page_size"])){
+			jqObj["rowNum"] = valueCfg["page_size"];
 		}
-		if(valueCfg["IS_FORCEFIT"] == "0BF"){
+		if(valueCfg["is_forcefit"] == "0BF"){
 			jqObj["shrinkToFit"] = true;
 		}else{
 			jqObj["shrinkToFit"] = false;
 		}
-		if(valueCfg["HIDDEN_COLUMNS"] != ""){
-			var hideArr = valueCfg["HIDDEN_COLUMNS"].split(",");
+		if(!ResultGrid._isNull(valueCfg["hidden_columns"])){
+			var hideArr = valueCfg["hidden_columns"].split(",");
 			$.each(hideArr, function(i, v){
 				$.each(jqObj["colModel"], function(ii, vv){
 					if(v.toUpperCase() == vv.name.toUpperCase()){
@@ -27,13 +33,13 @@ var ResultGrid = {
 				});
 			});
 		}	
-		if(valueCfg["DBLCLICK"] != ""){					
+		if(!ResultGrid._isNull(valueCfg["dblclick"])){					
 			jqObj["ondblClickRow"] = function(rowid,iRow,iCol,e){
-				eval(valueCfg["DBLCLICK"])(rowid,iRow,iCol,e);
+				eval(valueCfg["dblclick"])(rowid,iRow,iCol,e);
 			};
 		}
-		if(valueCfg["IMPORT_JS"] != ""){
-			var jsArr = valueCfg["IMPORT_JS"].split(",");
+		if(!ResultGrid._isNull(valueCfg["import_js"])){
+			var jsArr = valueCfg["import_js"].split(",");
 			$.each(jsArr, function(i, v){
 				var oImportJs = window.document.createElement("script");
 				oImportJs.language = "javascript";
@@ -44,8 +50,8 @@ var ResultGrid = {
 				oLastJs.insertAdjacentElement('afterEnd', oImportJs);
 			});		
 		}
-		if(valueCfg["IMPORT_CSS"] != ""){
-			var cssArr = valueCfg["IMPORT_CSS"].split(",");
+		if(!ResultGrid._isNull(valueCfg["import_css"])){
+			var cssArr = valueCfg["import_css"].split(",");
 			$.each(cssArr, function(i, v){
 				var oImportCss = window.document.createElement("link");
 				oImportCss.rel = "stylesheet";
@@ -55,8 +61,9 @@ var ResultGrid = {
 				oLastJs.insertAdjacentElement('afterEnd', oImportCss);
 			});		
 		}
-		if(valueCfg["CONFIG_SCRIPT"] != ""){
-			jqObj = $.extend(true, jqObj, valueCfg["CONFIG_SCRIPT"]);
+		if(!ResultGrid._isNull(valueCfg["config_script"])){
+			var obj = $.parseJSON(valueCfg["config_script"]);
+			jqObj = $.extend(true, jqObj, obj);
 		}
 	}
 };
@@ -108,11 +115,10 @@ $.fn.ResultGrid = function(options){
 				jqObj["colModel"] = colModel;
 			}
 		}
-		var valueCfg = getData({url:GET_DATA_URL+"valueCfg/"+options.result});		
+		var valueCfg = getData({url:GET_DATA_URL+"valueCfg/"+options.result});				
 		ResultGrid.setValueCfg(valueCfg, jqObj, $grid);
 		$grid.jqGrid(jqObj);
 	}else{
 		alert("miss result");
 	}
 };
-//$.extend($.fn.ResultGrid,$.fn.jqGrid);

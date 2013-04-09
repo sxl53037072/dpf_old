@@ -8,30 +8,21 @@
 	   		
 	   
 		   jQuery(function(){	
+			   
+			   
 			   jQuery('#productSellListGrid').ResultGrid({
 				   result : "1",
-				   resultParam : {"status_flag": "3"},
-				   caption:"热销产品",
-				   /* colModel:[
-						{label: '状态', name:'STATUS_FLAG_NAME',index:'STATUS_FLAG_NAME', width:80, align:'right', sortable:false, formatter:function(cellvalue, options, rowObject){
-							switch(rowObject.STATUS_FLAG+""){
-								case "0":
-									return "发布审核中";
-								case "1":
-									return "已发布";	
-								case "2":
-									return "已失效";	
-								case "3":
-									return "草稿";	
-								case "4":
-									return "失效审核中";		
-							}
-						}},
-						{label: '推荐理由', name:'RECOMMEND_REASON',index:'RECOMMEND_REASON', width:300, align:'left', sortable:false},
-						{name:'STATUS_FLAG',index:'STATUS_FLAG', hidden:true}
-			       ], */
-				   pager:'#productSellListGrid_pager'
+				   resultParam : {"status_flag": "3"}
 			   });
+			   
+			   
+			   
+			   
+			   
+			   
+			   
+			   
+			   
 			   $("#refGrid").on("click", function(){
 				   jQuery('#productSellListGrid').setGridParam({"page":1});
 				   jQuery('#productSellListGrid').setGridParam({"postData":{"status_flag": "1"}});

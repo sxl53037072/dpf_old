@@ -106,7 +106,7 @@ public class SQLDao {
 			rs = pstmt.executeQuery();
 			while(rs.next()){
 				HashMap<String, String> map = new HashMap<String, String>();
-				map = DataUtil.rsToMap(rs);			
+				map = JsonUtil.rsToMap(rs);			
 				list.add(map);
 			}
 		}catch(Exception e){
@@ -136,7 +136,7 @@ public class SQLDao {
 			pstmt.setString(1, key);
 			rs = pstmt.executeQuery();
 			if(rs.next()){
-				map = DataUtil.rsToMap(rs);
+				map = JsonUtil.rsToMap(rs);
 			}
 		}catch(Exception e){
 			e.printStackTrace();

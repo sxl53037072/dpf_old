@@ -113,6 +113,15 @@ public class JsonUtil {
 		}
 		return null;
 	}
+	public static HashMap<String, String> rsToMap(ResultSet rs) throws SQLException{
+		HashMap<String, String> returnMap = new HashMap<String, String>();
+		ResultSetMetaData rsmd = rs.getMetaData();
+		int columnCount = rsmd.getColumnCount();
+		for (int i = 0; i < columnCount; i++) {
+			returnMap.put(rsmd.getColumnName(i + 1).toLowerCase(), DataUtil.nullToStr(rs.getString(i + 1)));
+		}
+		return returnMap;	
+	}
 	
 	
 	public static void main(String[] args){
