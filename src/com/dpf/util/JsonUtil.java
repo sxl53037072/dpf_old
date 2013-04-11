@@ -97,7 +97,8 @@ public class JsonUtil {
 		try {
 			ResultSetMetaData rsmd = rs.getMetaData();
 			int count = rsmd.getColumnCount();  
-			for (int i = 1; i <= count; i++){  
+			for (int i = 1; i <= count; i++){
+				if(rsmd.getColumnName(i).toUpperCase().equals("SID_ROWNUM"))continue;
 				HashMap<String, String> map = new HashMap<String, String>();
 				map.put("name", rsmd.getColumnName(i).toUpperCase());
 				map.put("label", rsmd.getColumnName(i).toUpperCase());

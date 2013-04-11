@@ -84,6 +84,32 @@ public class ResultController {
 		}
 		return null;
 	}
+	@Post("sqlParam/{resultKey}")
+	public Object querySqlParam(@Param("resultKey") String id, Invocation inv){
+		try {			
+			return resultService.getSqlParam(id);
+		} catch (ApplicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	@Post("execSql")
+	public Object execSql(Invocation inv){
+		try {			
+			return resultService.execSql(inv.getParameter("sql"));
+		} catch (ApplicationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SystemException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 	@Get
 	public String resultGrid(Invocation inv,Paging page){
 		return "resultGrid";

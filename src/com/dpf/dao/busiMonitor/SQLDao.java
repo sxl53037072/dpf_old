@@ -55,6 +55,26 @@ public class SQLDao {
 					"  FROM GET_VALUE_SHOW_CFG T\n" + 
 					" WHERE T.GET_VALUE_CFG_ID = ?";
 	
+	private static final String SQL_GET_SQL_PARAM = 
+					"SELECT T.SQL_ID,\n" +
+					"       T.PARAM_NAME,\n" + 
+					"       T.COMP_ID,\n" + 
+					"       T.PARAM_TYPE,\n" + 
+					"       T.DATA_TYPE,\n" + 
+					"       T.IS_MULTIPLE,\n" + 
+					"       T.COMP_DS,\n" + 
+					"       T.COMP_CFG,\n" + 
+					"       T.PARAM_LABEL,\n" + 
+					"       T.SORT_ID,\n" + 
+					"       A.COMP_NAME,\n" + 
+					"       A.COMP_LABEL,\n" + 
+					"       A.DS_FUNCTION\n" + 
+					"  FROM SQL_PARAM_CFG T, COMPONENT A\n" + 
+					" WHERE T.COMP_ID = A.COMP_ID\n" + 
+					" and SQL_ID = (SELECT GET_VALUE_ID FROM GET_VALUE_CFG WHERE GET_VALUE_CFG_ID = ?)\n" +
+					" order by SORT_ID";
+
+	
 	/**
 	 * 功能:	获取自定义查询的SQL
 	 *
@@ -144,5 +164,66 @@ public class SQLDao {
 			DBCtrl.close(conn, rs, pstmt);
 		}
 		return map;
+	}
+	/**
+	 * 功能:	获取自定义查询搜索条件定义
+	 *
+	 * @param key 自定义查询ID
+	 * @return 查询到的数据 
+	 * @throws ApplicationException
+	 * @throws SystemException
+	 */
+	public static List<HashMap<String, String>> getSqlParam(String key) throws ApplicationException,
+			SystemException {
+		List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		try{
+			conn = DBCtrl.getConnection();
+			pstmt = conn.prepareStatement(SQL_GET_SQL_PARAM);
+			pstmt.setString(1, key);
+			rs = pstmt.executeQuery();
+			while(rs.next()){
+				HashMap<String, String> map = new HashMap<String, String>();
+				map = JsonUtil.rsToMap(rs);			
+				list.add(map);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			DBCtrl.close(conn, rs, pstmt);
+		}
+		return list;//JsonUtil.listToJson(list);
+	}
+	/**
+	 * 功能:	执行SQL查询语句
+	 *
+	 * @param key 自定义查询ID
+	 * @return 查询到的数据 
+	 * @throws ApplicationException
+	 * @throws SystemException
+	 */
+	public static List<HashMap<String, String>> execSql(String sql) throws ApplicationException,
+			SystemException {
+		List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		try{
+			conn = DBCtrl.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()){
+				HashMap<String, String> map = new HashMap<String, String>();
+				map = JsonUtil.rsToMap(rs);			
+				list.add(map);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			DBCtrl.close(conn, rs, pstmt);
+		}
+		return list;
 	}
 }

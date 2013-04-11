@@ -1,10 +1,35 @@
 var ResultGrid = {
 	local : "",
+	GET_DATA_URL : "result/",
 	_isNull : function(str){
 		if(str == "" || str == "undefined" || str == null || str == "null"){
 			return true;
 		}
 		return false;
+	},
+	getData : function(option){
+		var setting = {
+			url : "",
+			data : {},
+			callback : ""
+		};	
+		$.extend(setting,option);
+		var data = {};
+		jQuery.ajax({
+			url: setting.url,
+			type:"post",
+			async:false,
+			data:setting.data,
+			dataType : "json",
+			success: function(returnStr){
+				data = returnStr;
+				if(setting.callback)setting.callback(data);
+			},
+			error : function(XMLHttpRequest, textStatus, errorThrown){
+				alert("error getData ="+textStatus+"_"+errorThrown);
+			}
+		});
+		return data;
 	},
 	setValueCfg : function(valueCfg, jqObj, $grid){
 		if(!ResultGrid._isNull(valueCfg["title"])){
@@ -65,6 +90,82 @@ var ResultGrid = {
 			var obj = $.parseJSON(valueCfg["config_script"]);
 			jqObj = $.extend(true, jqObj, obj);
 		}
+	},
+	setSqlParam : function(sqlParamData, $grid){
+		if(filterData(sqlParamData) != null){
+			sqlParamData = sqlParamData.data.list;
+			/*
+			 *  <div id="GRIDID_search" class="grid_search">
+			 *		<label id="GRIDID_COLUMNID_label">XXXX</label>
+			 *		<input type="text" ID="COLUMNID" />
+			 *	</div>
+			 */
+			if(sqlParamData.length > 0){
+				var gridId = $grid.attr("id");
+				var $gridSearch = $("<div id='"+gridId+"_search' to='"+gridId+"' class='grid_search'>");
+				for(var i=0; i<sqlParamData.length; i++){
+					var $label = $("<label id='"+(gridId+"_"+sqlParamData[i]["param_name"]+"_label")+"' >"+sqlParamData[i]["param_label"]+"</label>");
+					var $el = ResultGrid._setSearch(sqlParamData[i]);
+					$gridSearch.append($label).append($el);
+				}	
+				var $search_btn = $("<input type='button' onclick='ResultGrid.search(this)' style='margin-left:5px' id='"+gridId+"_search_btn' value='搜索' /> ");
+				$gridSearch.append($search_btn);
+				$grid.before($gridSearch);
+			}
+			
+		}
+	},
+	_setSearch : function(data){
+		var comp_name = data["comp_name"];
+		var comp_cfg = data["comp_cfg"] || {};
+		var $ele;
+		if(comp_name == "textfield"){
+			$ele = $("<input class='search_element' type='text' id='"+data["param_name"]+"' >");					
+		}else if(comp_name == "result_datefield"){
+			
+		}else if(comp_name == "arrayselect"){
+			$ele = $("<select class='search_element' id='"+data["param_name"]+"' >");
+			var comp_ds = data["comp_ds"] || {};
+			for(var i=0; i<comp_ds.length; i++){
+				var $option = $("<option value='"+comp_ds[i][0]+"'>"+comp_ds[i][1]+"</option> ");
+				$ele.append($option);
+			}			
+		}else if(comp_name == "sqlselect"){
+			var comp_ds = data["comp_ds"];
+			$ele = $("<select class='search_element' id='"+data["param_name"]+"' >");
+			if(comp_ds){
+				var data = ResultGrid.getData({url:ResultGrid.GET_DATA_URL+"execSql",data:{"sql":comp_ds}});
+				if(filterData(data) != null){
+					data = data.data.list;
+					for(var i=0; i<data.length; i++){
+						var $option = $("<option value='"+data[i]["value"]+"'>"+data[i]["name"]+"</option> ");
+						$ele.append($option);
+					}
+				}
+			}			
+		}
+		if($ele){
+			for(var o in comp_cfg){
+				if(o == "width" || o == "height"){
+					$ele.css({o: comp_cfg[o]});
+				}else {
+					$ele.attr(o, comp_cfg[o]);
+				}				
+			}	
+		}
+		return $ele;
+	},
+	search : function(me){
+		var $grid_search = $(me).closest(".grid_search");
+		var gridId = $grid_search.attr("to");
+		var $grid = $("#"+gridId);
+		var postData = {};
+		$grid_search.find(".search_element").each(function(){
+			postData[$(this).attr("id")] = $(this).val();
+		});		
+		$grid.setGridParam({"page":1});
+		$grid.setGridParam({"postData":postData});
+		$grid.trigger("reloadGrid");	
 	}
 };
 
@@ -101,7 +202,7 @@ $.fn.ResultGrid = function(options){
 	};
 	if(options.result){
 		var colModel = [];
-		var colData = getData({url:GET_DATA_URL+"colModel/"+options.result});		
+		var colData = ResultGrid.getData({url:GET_DATA_URL+"colModel/"+options.result});		
 		if(filterData(colData) != null){
 			colModel = colData.data.list;
 		}
@@ -109,14 +210,16 @@ $.fn.ResultGrid = function(options){
 		var jqObj = $.extend(true, {}, resultGrid_default, options, {"url":GET_DATA_URL+"list/"+options.result,"postData":postData});
 		jqObj["colModel"] = $.merge(colModel || [], options.colModel || []);
 		if(jqObj["colModel"].length == 0){
-			colData = getData({url:GET_DATA_URL+"dataColModel/"+options.result});		
+			colData = ResultGrid.getData({url:GET_DATA_URL+"dataColModel/"+options.result});		
 			if(filterData(colData) != null){
 				colModel = colData.data.list;
 				jqObj["colModel"] = colModel;
 			}
 		}
-		var valueCfg = getData({url:GET_DATA_URL+"valueCfg/"+options.result});				
+		var valueCfg = ResultGrid.getData({url:GET_DATA_URL+"valueCfg/"+options.result});				
 		ResultGrid.setValueCfg(valueCfg, jqObj, $grid);
+		var sqlParamData = ResultGrid.getData({url:GET_DATA_URL+"sqlParam/"+options.result});
+		ResultGrid.setSqlParam(sqlParamData, $grid);
 		$grid.jqGrid(jqObj);
 	}else{
 		alert("miss result");

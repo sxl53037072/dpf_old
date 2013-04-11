@@ -113,8 +113,8 @@ public class SQLResult {
 			sqlBuf.append(this.sqlInfo.getSqlText());
 		}
 		StringBuffer buf = new StringBuffer("");
-		buf.append("SELECT * FROM (SELECT ROWNUM SID,A.* FROM (")
-				.append(sqlBuf).append(") A) B WHERE B.SID>? AND B.SID<=?");
+		buf.append("SELECT * FROM (SELECT ROWNUM SID_ROWNUM,A.* FROM (")
+				.append(sqlBuf).append(") A) B WHERE B.SID_ROWNUM>? AND B.SID_ROWNUM<=?");
 		this.sqlInfo.setSqlText(buf.toString());
 		List paramList = this.sqlInfo.getParamList();
 		int page = this.getElementNumber(this.resultNode,

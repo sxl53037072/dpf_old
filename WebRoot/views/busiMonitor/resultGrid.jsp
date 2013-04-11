@@ -12,7 +12,7 @@
 			   
 			   jQuery('#productSellListGrid').ResultGrid({
 				   result : "1",
-				   resultParam : {"status_flag": "3"}
+				   resultParam : {"STATUS_FLAG": "3"}
 			   });
 			   
 			   
@@ -141,6 +141,25 @@
 		table td.Data{overflow:visible;}	
 		.required{color:red}
 		
+		
+		
+		
+		.grid_search label{
+			font-family: "宋体", Arial, Verdana;font-size: 12px;
+			width: 140px;
+			display: inline-block;
+			text-align: right;
+			line-height: 26px;
+			font-size: 12px;
+			margin-right: 10px;
+		}
+		.grid_search label, .adminform input, .adminform button, .adminform select, .adminform textarea {
+			font-size:12px;
+			font-weight:normal;
+			line-height:20px
+		}
+		
+		
 	</style>
 	</head>	
 	<body >
@@ -148,6 +167,12 @@
 		<h2><em>热销产品<input type="button" id="refGrid" value="ref" /></em></h2>
 	</div>
 	<div id="toolBarDiv" class="pageTool" style="left: 0px; top: 26px;"></div>	
+	
+	<!-- <div id="productSellListGrid_search" class="grid_search">
+		<label id="">产品名称</label>
+		<input type="text" />
+	</div> -->
+	
 	<div class="group">
 		<table id="productSellListGrid"></table>
 		<div id="productSellListGrid_pager"></div>

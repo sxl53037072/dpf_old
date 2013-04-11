@@ -39,4 +39,10 @@ public class ResultService {
 	public Object getValueCfg(String key) throws ApplicationException, SystemException{
 		return JSONObject.fromObject(SQLDao.getValueCfg(key));
 	}
+	public Object getSqlParam(String key) throws ApplicationException, SystemException{
+		return JsonBiz.getJsonDataForOption(SQLDao.getSqlParam(key));		
+	}
+	public Object execSql(String sql) throws ApplicationException, SystemException{
+		return JsonBiz.getJsonDataForOption(SQLDao.execSql(sql));		
+	}
 }
