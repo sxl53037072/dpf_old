@@ -35,14 +35,14 @@ public class ExecuteProc implements ExecuteSQLAction {
 		String sql = sbuf.toString();
 		int cursor = info.getCursorIndex();
 		try {
-			System.out.println("**************************************");
-			System.out.println("sql=" + sql);
+//			System.out.println("**************************************");
+//			System.out.println("sql=" + sql);
 			CallableStatement csmt = conn.prepareCall(sql);
 			csmt.registerOutParameter(cursor, OracleTypes.CURSOR);
 			for (int i = 1; i <= paramList.size(); i++) {
 				if (i != cursor) {
 					ParamInfo v = (ParamInfo) paramList.get(i - 1);
-					System.out.println(i + "=" + v.getValue());
+//					System.out.println(i + "=" + v.getValue());
 					csmt.setObject(i, v.getValue(), v.getType());
 				}
 			}

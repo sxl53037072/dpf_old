@@ -7,6 +7,13 @@ var ResultGrid = {
 		}
 		return false;
 	},
+	jsonToObj:function(str){
+		if(!str)return null;
+		if(typeof str == 'object')return str;
+		try{
+	    	return Function("return "+str)();
+		}catch(e){ return null;}
+	},
 	getData : function(option){
 		var setting = {
 			url : "",
@@ -47,7 +54,7 @@ var ResultGrid = {
 			jqObj["shrinkToFit"] = true;
 		}else{
 			jqObj["shrinkToFit"] = false;
-		}
+		}		
 		if(!ResultGrid._isNull(valueCfg["hidden_columns"])){
 			var hideArr = valueCfg["hidden_columns"].split(",");
 			$.each(hideArr, function(i, v){
@@ -57,7 +64,7 @@ var ResultGrid = {
 					}
 				});
 			});
-		}	
+		}			
 		if(!ResultGrid._isNull(valueCfg["dblclick"])){					
 			jqObj["ondblClickRow"] = function(rowid,iRow,iCol,e){
 				eval(valueCfg["dblclick"])(rowid,iRow,iCol,e);
@@ -71,10 +78,16 @@ var ResultGrid = {
 				oImportJs.type = "text/javascript";
 				oImportJs.defer = true;
 				oImportJs.src = ResultGrid.local+v;
-				var oLastJs = document.scripts[document.scripts.length - 1];
-				oLastJs.insertAdjacentElement('afterEnd', oImportJs);
+				//var oLastJs = document.scripts[document.scripts.length - 1];
+				//$(oLastJs).insertAfter(oImportJs);
+				document.getElementsByTagName("head").item(0).appendChild(oImportJs);   
+				//oLastJs.insertAdjacentElement('afterEnd', oImportJs);
+//				var $js = $("<script language='javascript' type='text/javascript' defer='true' src='"+ResultGrid.local+v+"'> ");
+//				$("script").last().insertAfter($js);
 			});		
 		}
+		
+		
 		if(!ResultGrid._isNull(valueCfg["import_css"])){
 			var cssArr = valueCfg["import_css"].split(",");
 			$.each(cssArr, function(i, v){
@@ -82,14 +95,19 @@ var ResultGrid = {
 				oImportCss.rel = "stylesheet";
 				oImportCss.type = "text/css";
 				oImportCss.href = ResultGrid.local+v;
-				var oLastJs = document.scripts[document.scripts.length - 1];
-				oLastJs.insertAdjacentElement('afterEnd', oImportCss);
+				document.getElementsByTagName("head").item(0).appendChild(oImportCss);   
+				//var oLastJs = document.scripts[document.scripts.length - 1];
+				//$(oLastJs).insertAfter(oImportCss);
+//				oLastJs.insertAdjacentElement('afterEnd', oImportCss);
+//				var $css = $("<link rel='stylesheet' type='text/css' href='"+ResultGrid.local+v+"'> ");
+//				$("script").last().insertAfter($css);
 			});		
 		}
 		if(!ResultGrid._isNull(valueCfg["config_script"])){
-			var obj = $.parseJSON(valueCfg["config_script"]);
+			var obj = this.jsonToObj(valueCfg["config_script"]);
 			jqObj = $.extend(true, jqObj, obj);
 		}
+		
 	},
 	setSqlParam : function(sqlParamData, $grid){
 		if(filterData(sqlParamData) != null){
@@ -122,7 +140,7 @@ var ResultGrid = {
 		if(comp_name == "textfield"){
 			$ele = $("<input class='search_element' type='text' id='"+data["param_name"]+"' >");					
 		}else if(comp_name == "result_datefield"){
-			
+			$ele = $("<input id='"+data["param_name"]+"' type='text' class='Wdate search_element' onClick='WdatePicker()'>");//onfocus='WdatePicker({skin:\"blueFresh\",dateFmt:\"yyyy-MM-dd\"});'			
 		}else if(comp_name == "arrayselect"){
 			$ele = $("<select class='search_element' id='"+data["param_name"]+"' >");
 			var comp_ds = data["comp_ds"] || {};
@@ -171,34 +189,11 @@ var ResultGrid = {
 
 $.fn.ResultGrid = function(options){	
 	var GET_DATA_URL = "result/";
+	window.ttt = 1;
 	var $grid = $(this);
 	var resultGrid_default = {
 		mtype : 'post',
 		loadui : "block"
-	};
-	var getData = function(option){
-		var setting = {
-			url : "",
-			data : {},
-			callback : ""
-		};	
-		$.extend(setting,option);
-		var data = {};
-		jQuery.ajax({
-			url: setting.url,
-			type:"post",
-			async:false,
-			data:setting.data,
-			dataType : "json",
-			success: function(returnStr){
-				data = returnStr;
-				if(setting.callback)setting.callback(data);
-			},
-			error : function(XMLHttpRequest, textStatus, errorThrown){
-				alert("error getData ="+textStatus+"_"+errorThrown);
-			}
-		});
-		return data;
 	};
 	if(options.result){
 		var colModel = [];
@@ -218,7 +213,7 @@ $.fn.ResultGrid = function(options){
 		}
 		var valueCfg = ResultGrid.getData({url:GET_DATA_URL+"valueCfg/"+options.result});				
 		ResultGrid.setValueCfg(valueCfg, jqObj, $grid);
-		var sqlParamData = ResultGrid.getData({url:GET_DATA_URL+"sqlParam/"+options.result});
+		var sqlParamData = ResultGrid.getData({url:GET_DATA_URL+"sqlParam/"+options.result});		
 		ResultGrid.setSqlParam(sqlParamData, $grid);
 		$grid.jqGrid(jqObj);
 	}else{

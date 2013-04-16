@@ -74,7 +74,7 @@ public class SQLResult {
 			return JsonUtil.rsToJqGrid(rs, totalCount, paging);
 		}catch(Exception e){
 			e.printStackTrace();
-			return JsonBiz.isSucceed(false, e.toString()).toString();
+			return JsonBiz.isSucceed(false, "执行SQL出错").toString();
 		}finally{
 			DBCtrl.close(conn, rs);
 		}

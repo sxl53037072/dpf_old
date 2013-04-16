@@ -2035,6 +2035,10 @@ $.fn.jqGrid = function( pin ) {
 				var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
 				if(key == 13) {
 					ts.p.page = ($(this).val()>0) ? $(this).val():ts.p.page;
+					if(ts.p.page > ts.p.lastpage){
+						ts.p.page = ts.p.lastpage;
+						$(this).val(ts.p.page);
+					}
 					if(!clearVals('user')) { return false; }
 					populate();
 					return false;
@@ -3723,14 +3727,6 @@ $.jgrid.extend({
 		var postData = $("#" + id).jqGrid("getGridParam", "postData"); 
 		$.extend(postData, data); 
 		$("#" + id).jqGrid("setGridParam", {search: true}).trigger("reloadGrid", [{page:1}]);
-	},
-	//data:查询条件，opt：grid参数
-	queryGrid : function(data,opt){
-		var param = {postData:data};
-		if(opt){
-			$.extend(param,opt);
-		}
-		$($(this)[0]).jqGrid("setGridParam",param).trigger("reloadGrid");
 	}
 });
 })(jQuery);
@@ -4701,7 +4697,7 @@ f1=function(k){return parseInt(E1.css(k),10)||false;};
 	Version:     0.9-p5
 	Description: Restructured code, JSLint validated (no strict whitespaces),
 	             added handling of empty arrays, empty strings, and int/floats values.
-	Author:      Michael Schøler/2008-01-29
+	Author:      Michael Sch?ler/2008-01-29
 	Web:         http://michael.hinnerup.net/blog/2008/01/26/converting-json-to-xml-and-xml-to-json/
 	
 	Description: json2xml added support to convert functions as CDATA
@@ -12327,14 +12323,25 @@ $.jgrid.extend({
 			$("#gbox_"+gID).resizable(opts);
 		});
 	},
-	addToToolBar:function(id,toolbar){
-		if(toolbar.length==0){
-			$("#" + id).remove();
-			return;
-	  	}
+	 addToToolBar:function(id,toolbar){
+		  if(toolbar.length==0){
+		  $("#" + id).remove();
+		 	 return;
+		  }
 		if (toolbar) {
-			var tb = $("#" + id)
+			var tb = $("#" + id);
+			var itemsArr = [];
 			for(var i=0; i<toolbar.length; i++) {
+				var btn = toolbar[i];
+				itemsArr.push({
+		          type : 'button',
+		          text : "  " + btn.text + "  ",
+		          bodyStyle : btn.cuscls,
+		          id: btn.id,
+		          useable : btn.disabled || 'T',
+		          handler : btn.handler        
+		        });
+				/*
 				var btn = toolbar[i];
 				var divO = $('<div class="btn-primary_wk"></div>');
 				var divL = $('<div class="btn-primary_wk_l">&nbsp;</div>');
@@ -12347,7 +12354,16 @@ $.jgrid.extend({
 				.attr('disabled',btn.disabled)
 				.addClass(btn.cuscls);
 				tb.append(divO.append(divL).append(divM.append(tool)).append(divR));
+				*/
 			}
+			
+			var divToolbar = new Toolbar({
+		        renderTo : id,
+				//border: 'top',
+		        items : itemsArr
+			});
+			divToolbar.render();
+			divToolbar.genAZ();
 		}
 	}
 });

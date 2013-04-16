@@ -1,1 +1,3 @@
-alert(2222);
+function aa(){
+	alert(2222);
+}

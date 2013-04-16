@@ -8,13 +8,10 @@
 	   		
 	   
 		   jQuery(function(){	
-			   
-			   
 			   jQuery('#productSellListGrid').ResultGrid({
-				   result : "1",
-				   resultParam : {"STATUS_FLAG": "3"}
+				   result : "1"//,
+				   //resultParam : {"STATUS_FLAG": "3"}
 			   });
-			   
 			   
 			   
 			   
@@ -177,102 +174,8 @@
 		<table id="productSellListGrid"></table>
 		<div id="productSellListGrid_pager"></div>
 	</div>
-	
-	<div id="productSell_dialog" style="display:none;">
-		<form action="" id="productSell_form" class="productForm">
-			<input type="hidden" id="add_PID_id" name="PID" />
-			<div class="group">
-				<img class="expand" src="../customerview/images/expand.gif" />基本信息<span style="float: right;"></span>
-			</div>
-			<table id="baseInfo" style="font-size: 12px;" cellPadding="0" cellSpacing="0">	
-				<tr>
-					<td width="15%"></td>
-					<td width="24%"></td>
-					<td width="24%"></td>
-					<td width="15%"></td>
-					<td></td>
-				</tr>
-				<tr>
-					<td rowspan="7" align="center" width="120px">
-					<img style="margin:0px 5px 0px 5px;cursor:pointer;" id="imgShow"  width="120" height="120" src=""  onclick="productSell.uploadDialog()"/>
-					<br />
-					<div class="btn"  style="margin:5px 0px 0px 5px"  id="requestBtn" onclick="productSell.uploadDialog()">
-			          <div class="act_btn">图片上传</div>			          
-			          <input type="hidden" name="IMGID" id="add_IMGID_id"/>
-			        </div>
-					</td>						
-				</tr>	
-				<tr>
-					<td class="Title">产品代码：</td>
-					<td class="Data" ><input type="text" id="add_PRODUCT_CODE_id" name="PRODUCT_CODE" onchange="productSell.productCodeChange()"/></td>
-					<td class="Title"><span class="required">*</span>产品名称：</td>
-					<td class="Data" ><input type="text" id="add_PRODUCT_NAME_id" name="PRODUCT_NAME" /></td>
-				</tr>		
-				<tr>
-					<td class="Title"><span class="required">*</span>产品类型：</td>
-					<td class="Data"><select id="add_PRODUCT_TYPE_id" name="PRODUCT_TYPE" onchange="productSell.productTypeChange()"></select> 
-					&nbsp;&nbsp;&nbsp;
-					<input type="text" id="add_PRODUCT_TYPE_OTHER_id" style="display:none;padding:0px;mapping:0px;"/></td>
-					<td colspan="2"></td>
-				</tr>
-				<tr>
-					<td class="Title"><span class="required">*</span>推荐理由：</td>
-					<td class="Data" colspan="3"><textarea id="add_RECOMMEND_REASON_id" name="RECOMMEND_REASON"></textarea></td>
-				</tr>
-				<tr>
-					<td class="Title">推荐栏目：</td>
-					<td class="Data" colspan="3">
-						<table border=0>
-							<tr>
-								<td>
-									<div style="white-space:nowrap">
-										<input type="checkbox" id="add_HOTSELL_FLAG_id" checked="true" /><span >热销产品</span>
-										&nbsp;&nbsp;&nbsp;&nbsp;
-										<input type="checkbox" id="add_NEWSELL_FLAG_id"  /><span>新发产品</span>
-										&nbsp;&nbsp;&nbsp;&nbsp;
-										<input type="checkbox" id="add_RECOMMEND_FLAG_id" /><span>推荐标志</span>
-									</div>
-								</td>
-							</tr>
-						</table>
-					</td>
-				</tr>
-				<tr>
-					<td class="Title" id="add_NAV_LASTEST_name">最新净值(元)：</td>
-					<td class="Data" ><input type="text" id="add_NAV_LASTEST_id" name="NAV_LASTEST" readOnly=true disabled=true/></td>
-					<td class="Title" id="add_NAV_DATE_name">净值日期：</td>
-					<td class="Data" ><input type="text" id="add_NAV_DATE_id" name="NAV_DATE"  readOnly=true disabled=true/></td>
-				</tr>
-				<tr>
-					<td class="Title" id="add_RRINTHREEMONTH_name">今年以来增长率(%)：</td>
-					<td class="Data"><input type="text" id="add_RRINTHREEMONTH_id" name="RRINTHREEMONTH" readOnly=true  disabled=true/></td>
-					<td colspan="2"></td>
-				</tr>		
-			</table>
-			
-			<div class="group">
-				<img class="expand" src="../customerview/images/expand.gif" />产品简介(手机文本 <span style="color:#ff0000">200字内</span>)<span style="float: right;"></span>
-			</div>
-			<div class="group">
-				<table width="100%" cellPadding="0" cellSpacing="0">
-					<tr>
-						<td><textarea id="add_INTRODUCION_MOBILE_id" name="INTRODUCION_MOBILE" ></textarea></td>
-					</tr>
-				</table>
-			</div>				
-										
-		</form>
-			<div class="group">
-				<img class="expand" src="../customerview/images/expand.gif" />产品介绍(HTML版)<span style="float: right;"></span>
-			</div>
-			<div class="group">
-				<table width="100%">
-					<tr>
-						<td><textarea id="add_INTRODUCION_id" name="INTRODUCION"></textarea></td>
-					</tr>
-				</table>
-			</div>
-	</div>
+<!-- 	<input id='aaa' type='text' class='Wdate' onfocus="WdatePicker({skin:'blueFresh',dateFmt:'yyyy-MM-dd'});">  -->
+	<input type="text" onfocus='WdatePicker({dateFmt:"yyyy-MM-dd"});' class="Wdate" id="CREATE_TIME111">
 	
 	<div id="uploadDialog" style="display:none;">
 		<form id="uploadForm" enctype="multipart/form-data" target="uploadIframe" method="post" action="../hotProduct/productSellAction.do?act=upload">

@@ -1,0 +1,53 @@
+@CHARSET "UTF-8";
+/*新建*/
+.button_table .add {
+  background: transparent url(../image/add-row.gif) no-repeat 0 2px;
+  padding-left:18px;
+}
+/*修改*/
+.button_table .edit {
+  background: transparent url(../image/edit.png) no-repeat 0 2px;
+  padding-left:20px;
+}
+/*保存*/
+.button_table .save {
+  background: transparent url(../image/save.gif) no-repeat 0 2px;
+  padding-left:20px;
+}
+/*删除*/
+.button_table .delete {
+  background: transparent url(../image/delete-row.gif) no-repeat 0 2px;
+  padding-left:20px;
+}
+/*查找*/
+.button_table .search {
+  background:transparent url(../image/search-row.png) no-repeat 0 2px;
+  padding-left:20px;
+}
+/*权限设置*/
+.button_table .role-setup {
+  background:transparent url(../image/role-setup.gif) no-repeat 0 2px;
+  padding-left:20px;
+}
+/*已关联*/
+.button_table .linked {
+  background:transparent url(../image/linked.gif) no-repeat 0 3px;
+  padding-left:20px;
+}
+/*下面是过滤组件用到的样式*/
+.button_table .filter-read-y {
+  background:transparent url(../image/read-y.gif) no-repeat 2px 2px;
+	width:20px;
+}
+.button_table .filter-read-n {
+  background:transparent url(../image/read-n.gif) no-repeat 2px 2px;
+	width:20px;
+}
+.button_table .filter-sended {
+  background:transparent url(../image/sended.gif) no-repeat 2px 2px;
+	width:20px;
+}
+.button_table .btn-all {
+  background:transparent url(../image/all.gif) no-repeat 2px 2px;
+	width:20px;
+}
