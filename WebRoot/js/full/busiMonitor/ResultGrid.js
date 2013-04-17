@@ -1,6 +1,33 @@
+// 得到url搜索串
+function getURLSearch(isParent)
+{
+	var strSearch ="";
+	if(isParent){
+	 strSearch= window.parent.location.search;
+	}
+	else{
+		 strSearch= location.search;
+	}
+	var reg1 = /=/gi;
+	var reg2 = /&/gi;
+	strSearch = strSearch.substr(1, strSearch.length);
+	strSearch = strSearch.replace(reg1, '":"');
+	strSearch = strSearch.replace(reg2, '","');
+	if (strSearch == "")
+		return null;
+	else
+		strSearch = '{"' + strSearch + '"}';
+	eval("var ArrayUrl=" + strSearch);
+	return ArrayUrl;
+}
+
+function getUrlParam()
+{
+	return getURLSearch() || {};
+}
 var ResultGrid = {
 	local : "",
-	GET_DATA_URL : "result/",
+	GET_DATA_URL : "busiMonitor/result/",
 	_isNull : function(str){
 		if(str == "" || str == "undefined" || str == null || str == "null"){
 			return true;
@@ -23,7 +50,7 @@ var ResultGrid = {
 		$.extend(setting,option);
 		var data = {};
 		jQuery.ajax({
-			url: setting.url,
+			url: ResultGrid.local+"/"+setting.url,
 			type:"post",
 			async:false,
 			data:setting.data,
@@ -33,7 +60,7 @@ var ResultGrid = {
 				if(setting.callback)setting.callback(data);
 			},
 			error : function(XMLHttpRequest, textStatus, errorThrown){
-				alert("error getData ="+textStatus+"_"+errorThrown);
+				alert("error getData ="+textStatus+"_"+errorThrown+"_"+setting.url);
 			}
 		});
 		return data;
@@ -142,7 +169,7 @@ var ResultGrid = {
 	},
 	setToolbar : function(valueCfg, jqObj, $grid){
 		var toolbarMenu = valueCfg["toolbar_menu"];
-		if(toolbarMenu.length > 0){
+		if(toolbarMenu && toolbarMenu.length > 0){
 			if(!ResultGrid._isNull(toolbarMenu[0]["import_js"])){
 				ResultGrid.importFile(ResultGrid.local+toolbarMenu[0]["import_js"], "js");
 			}			
@@ -255,7 +282,6 @@ var ResultGrid = {
 };
 
 $.fn.ResultGrid = function(options){	
-	var GET_DATA_URL = "result/";
 	window.ttt = 1;
 	var $grid = $(this);
 	var resultGrid_default = {
@@ -264,23 +290,23 @@ $.fn.ResultGrid = function(options){
 	};
 	if(options.result){
 		var colModel = [];
-		var colData = ResultGrid.getData({url:GET_DATA_URL+"colModel/"+options.result});		
+		var colData = ResultGrid.getData({url:ResultGrid.GET_DATA_URL+"colModel/"+options.result});		
 		if(filterData(colData) != null){
 			colModel = colData.data.list;
 		}
 		var postData = options.resultParam || {};
-		var jqObj = $.extend(true, {}, resultGrid_default, options, {"url":GET_DATA_URL+"list/"+options.result,"postData":postData});
+		var jqObj = $.extend(true, {}, resultGrid_default, options, {"url":ResultGrid.local+"/"+ResultGrid.GET_DATA_URL+"list/"+options.result,"postData":postData});
 		jqObj["colModel"] = $.merge(colModel || [], options.colModel || []);//数据库列定义+页面列定义
 		if(jqObj["colModel"].length == 0){
-			colData = ResultGrid.getData({url:GET_DATA_URL+"dataColModel/"+options.result});		
+			colData = ResultGrid.getData({url:ResultGrid.GET_DATA_URL+"dataColModel/"+options.result});		
 			if(filterData(colData) != null){
 				colModel = colData.data.list;
 				jqObj["colModel"] = colModel;
 			}
 		}
-		var valueCfg = ResultGrid.getData({url:GET_DATA_URL+"valueCfg/"+options.result});				
+		var valueCfg = ResultGrid.getData({url:ResultGrid.GET_DATA_URL+"valueCfg/"+options.result});				
 		ResultGrid.setValueCfg(valueCfg, jqObj, $grid);		
-		var sqlParamData = ResultGrid.getData({url:GET_DATA_URL+"sqlParam/"+options.result});		
+		var sqlParamData = ResultGrid.getData({url:ResultGrid.GET_DATA_URL+"sqlParam/"+options.result});		
 		ResultGrid.setSqlParam(sqlParamData, $grid);
 		ResultGrid.setToolbar(valueCfg, jqObj, $grid);
 		$grid.jqGrid(jqObj);

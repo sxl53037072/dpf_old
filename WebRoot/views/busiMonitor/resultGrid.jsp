@@ -8,9 +8,12 @@
 	   		
 	   
 		   jQuery(function(){	
+			   var param = getUrlParam();
+			   var result = param.id;
+			   delete param.id;
 			   jQuery('#productSellListGrid').ResultGrid({
-				   result : "1"//,
-				   //resultParam : {"STATUS_FLAG": "3"}
+				   result : result,
+				   resultParam : param
 			   });
 			   
 			   
