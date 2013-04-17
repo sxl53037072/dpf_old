@@ -216,8 +216,11 @@ var ResultGrid = {
 				var $gridSearch = $("<div id='"+gridId+"_search' to='"+gridId+"' class='grid_search'>");
 				for(var i=0; i<sqlParamData.length; i++){
 					var $label = $("<label id='"+(gridId+"_"+sqlParamData[i]["param_name"]+"_label")+"' >"+sqlParamData[i]["param_label"]+"</label>");
-					var $el = ResultGrid._setSearch(sqlParamData[i]);
+					var $el = ResultGrid._setSearch(sqlParamData[i]);					
 					$gridSearch.append($label).append($el);
+					if(i!=0 && i%2==0){
+						$gridSearch.append("<div></div>");
+					}
 				}	
 				var $search_btn = $("<input type='button' onclick='ResultGrid.search(this)' style='margin-left:5px' id='"+gridId+"_search_btn' value='搜索' /> ");
 				$gridSearch.append($search_btn);
