@@ -2,8 +2,13 @@ SELECT T.*,T.ROWID FROM GET_VALUE_CFG T;
 SELECT T.*,T.ROWID FROM SQL_CFG T;
 SELECT T.*,T.ROWID FROM GET_VALUE_CFG_FIELD T where t.get_value_cfg_id = 1;
 SELECT T.*,T.ROWID FROM GET_VALUE_SHOW_CFG T where t.get_value_cfg_id = 1;
+--搜索栏
 SELECT T.*,T.ROWID FROM COMPONENT T;
 SELECT T.*,T.ROWID FROM SQL_PARAM_CFG T where t.sql_id = 1;
+--工具栏
+SELECT T.*,T.ROWID FROM SYS_FUNC_MENU_GROUP T;
+SELECT T.*,T.ROWID FROM SYS_FUNC_MENU T;
+SELECT T.*,T.ROWID FROM SYS_FUNC_MENU_ITEM T WHERE T.FUNC_MENU_GROUP_ID = 2015 ORDER BY T.SORT_ID;
 
 
 --get sqlInfo
@@ -54,6 +59,29 @@ SELECT T.SQL_ID,
   FROM SQL_PARAM_CFG T, COMPONENT A
  WHERE T.COMP_ID = A.COMP_ID
  and SQL_ID = (SELECT GET_VALUE_ID FROM GET_VALUE_CFG WHERE GET_VALUE_CFG_ID = ?);
- AND ((0=nvl(length(?),0) and 1=1) or (0<nvl(length(?),0) and sql_id = ?))
+ AND ((0=nvl(length(?),0) and 1=1) or (0<nvl(length(?),0) and sql_id = ?));
+
+--获取工具栏按钮
+SELECT T.Func_Menu_Item_Id,
+       T.FUNC_MENU_GROUP_ID,
+       T.PARENT_ITEM_ID,
+       T.ITEM_LABEL,
+       T.ITEM_NAME,
+       T.EVENT,
+       T.ICO,
+       T.OTHER_ATTRS,
+       T.IS_LINE,
+       T.DISABLED,
+       T.DYNAMIC_LOAD_EVENT,
+       T.REMARK,
+       T.STATE,
+       T.DISPLAY,
+       A.IMPORT_JS
+  FROM SYS_FUNC_MENU_ITEM T, SYS_FUNC_MENU_GROUP A
+ WHERE T.FUNC_MENU_GROUP_ID = A.SYS_FUNC_MENU_GROUP_ID
+ AND A.SYS_FUNC_MENU_GROUP_ID = 2015
+ AND T.STATE = '0SA'
+ ORDER BY T.SORT_ID
+ for update;
  
  

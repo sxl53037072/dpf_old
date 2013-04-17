@@ -123,6 +123,15 @@ public class JsonUtil {
 		}
 		return returnMap;	
 	}
+	public static HashMap<String, Object> rsToMapObject(ResultSet rs) throws SQLException{
+		HashMap<String, Object> returnMap = new HashMap<String, Object>();
+		ResultSetMetaData rsmd = rs.getMetaData();
+		int columnCount = rsmd.getColumnCount();
+		for (int i = 0; i < columnCount; i++) {
+			returnMap.put(rsmd.getColumnName(i + 1).toLowerCase(), DataUtil.nullToStr(rs.getString(i + 1)));
+		}
+		return returnMap;	
+	}
 	
 	
 	public static void main(String[] args){

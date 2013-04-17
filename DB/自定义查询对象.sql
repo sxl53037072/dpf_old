@@ -1,6 +1,6 @@
 -----------------------------------------------------
 -- Export file for user CRMII                      --
--- Created by Administrator on 2013/4/16, 16:39:03 --
+-- Created by Administrator on 2013/4/17, 15:50:41 --
 -----------------------------------------------------
 
 spool 自定义查询对象.log
@@ -370,6 +370,258 @@ alter table crmii.SQL_PARAM_CFG
 alter table crmii.SQL_PARAM_CFG
   add constraint CKC_PARAM_TYPE_SQL_PARA
   check (PARAM_TYPE in ('IN','OUT'));
+
+prompt
+prompt Creating table SYS_FUNC_MENU_GROUP
+prompt ==================================
+prompt
+create table crmii.SYS_FUNC_MENU_GROUP
+(
+  sys_func_menu_group_id NUMBER(5) not null,
+  remark                 VARCHAR2(250),
+  import_js              VARCHAR2(4000)
+)
+tablespace CRMII
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+comment on table crmii.SYS_FUNC_MENU_GROUP
+  is '系统菜单分组';
+comment on column crmii.SYS_FUNC_MENU_GROUP.sys_func_menu_group_id
+  is '功能菜单分组标识';
+comment on column crmii.SYS_FUNC_MENU_GROUP.remark
+  is '分组描述';
+comment on column crmii.SYS_FUNC_MENU_GROUP.import_js
+  is '引入JS路径';
+alter table crmii.SYS_FUNC_MENU_GROUP
+  add constraint PK_SYS_FUNC_MENU_GROUP primary key (SYS_FUNC_MENU_GROUP_ID)
+  using index 
+  tablespace CRMII
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table SYS_FUNC_MENU
+prompt ============================
+prompt
+create table crmii.SYS_FUNC_MENU
+(
+  func_menu_id       NUMBER(5) not null,
+  func_menu_group_id NUMBER(5),
+  menu_name          VARCHAR2(50) not null,
+  menu_name_cn       VARCHAR2(250) not null,
+  dhtml_id           VARCHAR2(50),
+  event              VARCHAR2(250),
+  width              VARCHAR2(15),
+  selecttype         VARCHAR2(50),
+  menutype           VARCHAR2(10) default 'rightMenu' not null,
+  menu_property_id   VARCHAR2(30),
+  other_attrs        VARCHAR2(250),
+  remark             VARCHAR2(250),
+  display_menu_item  VARCHAR2(250),
+  hidden_menu_item   VARCHAR2(250)
+)
+tablespace CRMII
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+comment on table crmii.SYS_FUNC_MENU
+  is '系统模块功能菜单';
+comment on column crmii.SYS_FUNC_MENU.func_menu_id
+  is '功能菜单标识';
+comment on column crmii.SYS_FUNC_MENU.func_menu_group_id
+  is '功能菜单分组标识';
+comment on column crmii.SYS_FUNC_MENU.menu_name
+  is '菜单名称';
+comment on column crmii.SYS_FUNC_MENU.menu_name_cn
+  is '菜单名称中文';
+comment on column crmii.SYS_FUNC_MENU.dhtml_id
+  is 'DHTML唯一标识';
+comment on column crmii.SYS_FUNC_MENU.event
+  is '菜单事件';
+comment on column crmii.SYS_FUNC_MENU.width
+  is '菜单宽度';
+comment on column crmii.SYS_FUNC_MENU.selecttype
+  is '选择子菜单的类型';
+comment on column crmii.SYS_FUNC_MENU.menutype
+  is '菜单类型';
+comment on column crmii.SYS_FUNC_MENU.menu_property_id
+  is '菜单对应归属值';
+comment on column crmii.SYS_FUNC_MENU.other_attrs
+  is '其他属性';
+comment on column crmii.SYS_FUNC_MENU.remark
+  is '备注';
+comment on column crmii.SYS_FUNC_MENU.display_menu_item
+  is '显示的菜单项';
+comment on column crmii.SYS_FUNC_MENU.hidden_menu_item
+  is '隐藏的菜单项';
+alter table crmii.SYS_FUNC_MENU
+  add constraint PK_SYS_FUNC_MENU primary key (FUNC_MENU_ID)
+  using index 
+  tablespace CRMII
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+alter table crmii.SYS_FUNC_MENU
+  add constraint FK_SYS_FUNC_REF_SYS_FUNC_GRP foreign key (FUNC_MENU_GROUP_ID)
+  references crmii.SYS_FUNC_MENU_GROUP (SYS_FUNC_MENU_GROUP_ID);
+alter table crmii.SYS_FUNC_MENU
+  add constraint CKC_MENUTYPE_SYS_FUNC
+  check (MENUTYPE in ('rightMenu','barMenu'));
+create index crmii.IDX_SYS_FUNC_MENU_NAME on crmii.SYS_FUNC_MENU (MENU_NAME)
+  tablespace CRMII
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+
+prompt
+prompt Creating table SYS_FUNC_MENU_ITEM
+prompt =================================
+prompt
+create table crmii.SYS_FUNC_MENU_ITEM
+(
+  func_menu_item_id  NUMBER(9) not null,
+  func_menu_group_id NUMBER(5),
+  parent_item_id     NUMBER(9),
+  item_label         VARCHAR2(250),
+  item_name          VARCHAR2(50),
+  event              VARCHAR2(250),
+  ico                VARCHAR2(250),
+  other_attrs        VARCHAR2(250),
+  is_line            VARCHAR2(3),
+  sort_id            NUMBER(5),
+  disabled           VARCHAR2(3) default '0BF',
+  dynamic_load_event VARCHAR2(250),
+  remark             VARCHAR2(250),
+  state              VARCHAR2(3) default '0SA' not null,
+  display            NUMBER(1) default 1
+)
+tablespace CRMII
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+comment on table crmii.SYS_FUNC_MENU_ITEM
+  is '功能菜单子项';
+comment on column crmii.SYS_FUNC_MENU_ITEM.func_menu_item_id
+  is '菜单子项标识';
+comment on column crmii.SYS_FUNC_MENU_ITEM.func_menu_group_id
+  is '功能菜单分组标识';
+comment on column crmii.SYS_FUNC_MENU_ITEM.parent_item_id
+  is '父菜单子项标识';
+comment on column crmii.SYS_FUNC_MENU_ITEM.item_label
+  is '菜单显示名称';
+comment on column crmii.SYS_FUNC_MENU_ITEM.item_name
+  is '菜单名';
+comment on column crmii.SYS_FUNC_MENU_ITEM.event
+  is '菜单事件';
+comment on column crmii.SYS_FUNC_MENU_ITEM.ico
+  is '菜单图标';
+comment on column crmii.SYS_FUNC_MENU_ITEM.other_attrs
+  is '菜单其他属性';
+comment on column crmii.SYS_FUNC_MENU_ITEM.is_line
+  is '是否菜单分割线';
+comment on column crmii.SYS_FUNC_MENU_ITEM.sort_id
+  is '同级排序标识';
+comment on column crmii.SYS_FUNC_MENU_ITEM.disabled
+  is '是否有效';
+comment on column crmii.SYS_FUNC_MENU_ITEM.dynamic_load_event
+  is '动态载入方法';
+comment on column crmii.SYS_FUNC_MENU_ITEM.remark
+  is '备注';
+comment on column crmii.SYS_FUNC_MENU_ITEM.state
+  is '状态';
+comment on column crmii.SYS_FUNC_MENU_ITEM.display
+  is '是否显示';
+alter table crmii.SYS_FUNC_MENU_ITEM
+  add constraint PK_SYS_FUNC_MENU_ITEM primary key (FUNC_MENU_ITEM_ID)
+  using index 
+  tablespace CRMII
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+alter table crmii.SYS_FUNC_MENU_ITEM
+  add constraint FK_FUNC_ITEM_REF_FUNC_GROUP foreign key (FUNC_MENU_GROUP_ID)
+  references crmii.SYS_FUNC_MENU_GROUP (SYS_FUNC_MENU_GROUP_ID);
+alter table crmii.SYS_FUNC_MENU_ITEM
+  add constraint FK_SYS_FUNC_REFERENCE_SYS_FUNC foreign key (PARENT_ITEM_ID)
+  references crmii.SYS_FUNC_MENU_ITEM (FUNC_MENU_ITEM_ID);
+alter table crmii.SYS_FUNC_MENU_ITEM
+  add constraint CKC_DISABLED_SYS_FUNC
+  check (DISABLED is null or (DISABLED in ('0BT','0BF')));
+alter table crmii.SYS_FUNC_MENU_ITEM
+  add constraint CKC_DISPLAY_SYS_FUNC
+  check (DISPLAY is null or (DISPLAY in (0,1)));
+alter table crmii.SYS_FUNC_MENU_ITEM
+  add constraint CKC_IS_LINE_SYS_FUNC
+  check (IS_LINE is null or (IS_LINE in ('0BT','0BF')));
+alter table crmii.SYS_FUNC_MENU_ITEM
+  add constraint CKC_STATE_SYS_MENU_ITEM
+  check (STATE in ('0SA','0SX'));
+create index crmii.IDX_ITEM_FUNC_MENU_GROUP_ID on crmii.SYS_FUNC_MENU_ITEM (FUNC_MENU_GROUP_ID)
+  tablespace CRMII
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
+create index crmii.IDX_PARENT_ITEM_ID on crmii.SYS_FUNC_MENU_ITEM (PARENT_ITEM_ID)
+  tablespace CRMII
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    minextents 1
+    maxextents unlimited
+  );
 
 
 spool off

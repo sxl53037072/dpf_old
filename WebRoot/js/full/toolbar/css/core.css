@@ -2,7 +2,7 @@
 /*新建*/
 .button_table .add {
   background: transparent url(../image/add-row.gif) no-repeat 0 2px;
-  padding-left:18px;
+  padding-left:20px;
 }
 /*修改*/
 .button_table .edit {

@@ -86,6 +86,9 @@ init:function () {
       if (t.bodyStyle) {
         button.addClass(t.bodyStyle);
       }
+      if (t.css) {
+          button.css(t.css);
+       }
       button.appendTo(b_center);
       if (t.title) {
         button.attr('title', t.title);
@@ -158,6 +161,9 @@ init:function () {
         if (t.bodyStyle) {
           cop.addClass(t.bodyStyle);
         }
+        if (t.css) {
+            cop.css(t.css);
+         }
         if (t.handler) {
           cop.bind('click', t.handler);
         }
@@ -226,6 +232,10 @@ init:function () {
   if (filter.bodyStyle) {
     button.addClass(filter.bodyStyle);
   }
+  if (filter.css) {
+	  button.css(filter.css);
+   }
+  
     
   //为按钮绑定点击事件
   button.bind('click', function () {

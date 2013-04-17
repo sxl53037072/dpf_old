@@ -12333,14 +12333,20 @@ $.jgrid.extend({
 			var itemsArr = [];
 			for(var i=0; i<toolbar.length; i++) {
 				var btn = toolbar[i];
-				itemsArr.push({
-		          type : 'button',
-		          text : "  " + btn.text + "  ",
-		          bodyStyle : btn.cuscls,
-		          id: btn.id,
-		          useable : btn.disabled || 'T',
-		          handler : btn.handler        
-		        });
+				if(btn == "-"){
+					itemsArr.push("-");
+				}else{
+					itemsArr.push({
+			          type : 'button',
+			          text : "  " + btn.text + "  ",
+			          bodyStyle : btn.cuscls,
+			          css : btn.css,
+			          id: btn.id,
+			          useable : btn.disabled || 'T',
+			          handler : btn.handler        
+			        });
+				}
+				
 				/*
 				var btn = toolbar[i];
 				var divO = $('<div class="btn-primary_wk"></div>');

@@ -73,6 +73,28 @@ public class SQLDao {
 					" WHERE T.COMP_ID = A.COMP_ID\n" + 
 					" and SQL_ID = (SELECT GET_VALUE_ID FROM GET_VALUE_CFG WHERE GET_VALUE_CFG_ID = ?)\n" +
 					" order by SORT_ID";
+	private static final String SQL_GET_SYS_MENU_ITEM = 
+					"SELECT T.Func_Menu_Item_Id,\n" +
+					"       T.FUNC_MENU_GROUP_ID,\n" + 
+					"       T.PARENT_ITEM_ID,\n" + 
+					"       T.ITEM_LABEL,\n" + 
+					"       T.ITEM_NAME,\n" + 
+					"       T.EVENT,\n" + 
+					"       T.ICO,\n" + 
+					"       T.OTHER_ATTRS,\n" + 
+					"       T.IS_LINE,\n" + 
+					"       T.DISABLED,\n" + 
+					"       T.DYNAMIC_LOAD_EVENT,\n" + 
+					"       T.REMARK,\n" + 
+					"       T.STATE,\n" + 
+					"       T.DISPLAY,\n" + 
+					"       A.IMPORT_JS\n" + 
+					"  FROM SYS_FUNC_MENU_ITEM T, SYS_FUNC_MENU_GROUP A\n" + 
+					" WHERE T.FUNC_MENU_GROUP_ID = A.SYS_FUNC_MENU_GROUP_ID\n" + 
+					" AND A.SYS_FUNC_MENU_GROUP_ID = ?\n" + 
+					" AND T.STATE = '0SA'\n" + 
+					" ORDER BY T.SORT_ID";
+
 
 	
 	/**
@@ -144,9 +166,9 @@ public class SQLDao {
 	 * @throws ApplicationException
 	 * @throws SystemException
 	 */
-	public static HashMap<String, String> getValueCfg(String key) throws ApplicationException,
+	public static HashMap<String, Object> getValueCfg(String key) throws ApplicationException,
 			SystemException {
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, Object> map = new HashMap<String, Object>();
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Connection conn = null;
@@ -156,7 +178,7 @@ public class SQLDao {
 			pstmt.setString(1, key);
 			rs = pstmt.executeQuery();
 			if(rs.next()){
-				map = JsonUtil.rsToMap(rs);
+				map = JsonUtil.rsToMapObject(rs);
 			}
 		}catch(Exception e){
 			e.printStackTrace();
@@ -188,7 +210,7 @@ public class SQLDao {
 				HashMap<String, String> map = new HashMap<String, String>();
 				map = JsonUtil.rsToMap(rs);			
 				list.add(map);
-			}
+			}			
 		}catch(Exception e){
 			e.printStackTrace();
 		}finally{
@@ -213,6 +235,37 @@ public class SQLDao {
 		try{
 			conn = DBCtrl.getConnection();
 			pstmt = conn.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			while(rs.next()){
+				HashMap<String, String> map = new HashMap<String, String>();
+				map = JsonUtil.rsToMap(rs);			
+				list.add(map);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally{
+			DBCtrl.close(conn, rs, pstmt);
+		}
+		return list;
+	}
+	/**
+	 * 功能:	获取自定义工具栏配置定义
+	 *
+	 * @param key 自定义查询ID
+	 * @return 查询到的数据 
+	 * @throws ApplicationException
+	 * @throws SystemException
+	 */
+	public static List<HashMap<String, String>> getSysMenuItem(String key) throws ApplicationException,
+			SystemException {
+		List<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Connection conn = null;
+		try{
+			conn = DBCtrl.getConnection();
+			pstmt = conn.prepareStatement(SQL_GET_SYS_MENU_ITEM);
+			pstmt.setString(1, key);
 			rs = pstmt.executeQuery();
 			while(rs.next()){
 				HashMap<String, String> map = new HashMap<String, String>();

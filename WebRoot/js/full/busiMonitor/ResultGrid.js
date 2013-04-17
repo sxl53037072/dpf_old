@@ -38,6 +38,35 @@ var ResultGrid = {
 		});
 		return data;
 	},
+	importFile : function(url, type){
+		if(this._isNull(url))return;
+		if(type == "css"){
+			var oImportCss = window.document.createElement("link");
+			oImportCss.rel = "stylesheet";
+			oImportCss.type = "text/css";
+			oImportCss.href = url;
+			document.getElementsByTagName("head").item(0).appendChild(oImportCss);   
+		}else if(type == "js"){
+			var oImportJs = window.document.createElement("script");
+			oImportJs.language = "javascript";
+			oImportJs.type = "text/javascript";
+			oImportJs.defer = true;
+			oImportJs.src = url;
+			document.getElementsByTagName("head").item(0).appendChild(oImportJs);   
+		}
+	},
+	clone:function(fromObj){    
+	   var toObj = {};
+	   for(var i in fromObj){    
+	      if(typeof fromObj[i] == "object"){    
+	         toObj[i]={};    
+	         toObj[i] = ResultGrid.clone(fromObj[i]);    
+	         continue;    
+	      }    
+	      toObj[i] = fromObj[i];    
+	   }
+	   return toObj;    
+	},
 	setValueCfg : function(valueCfg, jqObj, $grid){
 		if(!ResultGrid._isNull(valueCfg["title"])){
 			jqObj["caption"] = valueCfg["title"];
@@ -73,14 +102,15 @@ var ResultGrid = {
 		if(!ResultGrid._isNull(valueCfg["import_js"])){
 			var jsArr = valueCfg["import_js"].split(",");
 			$.each(jsArr, function(i, v){
-				var oImportJs = window.document.createElement("script");
-				oImportJs.language = "javascript";
-				oImportJs.type = "text/javascript";
-				oImportJs.defer = true;
-				oImportJs.src = ResultGrid.local+v;
+				ResultGrid.importFile(ResultGrid.local+v, "js");
+//				var oImportJs = window.document.createElement("script");
+//				oImportJs.language = "javascript";
+//				oImportJs.type = "text/javascript";
+//				oImportJs.defer = true;
+//				oImportJs.src = ResultGrid.local+v;
 				//var oLastJs = document.scripts[document.scripts.length - 1];
 				//$(oLastJs).insertAfter(oImportJs);
-				document.getElementsByTagName("head").item(0).appendChild(oImportJs);   
+//				document.getElementsByTagName("head").item(0).appendChild(oImportJs);   
 				//oLastJs.insertAdjacentElement('afterEnd', oImportJs);
 //				var $js = $("<script language='javascript' type='text/javascript' defer='true' src='"+ResultGrid.local+v+"'> ");
 //				$("script").last().insertAfter($js);
@@ -91,11 +121,12 @@ var ResultGrid = {
 		if(!ResultGrid._isNull(valueCfg["import_css"])){
 			var cssArr = valueCfg["import_css"].split(",");
 			$.each(cssArr, function(i, v){
-				var oImportCss = window.document.createElement("link");
-				oImportCss.rel = "stylesheet";
-				oImportCss.type = "text/css";
-				oImportCss.href = ResultGrid.local+v;
-				document.getElementsByTagName("head").item(0).appendChild(oImportCss);   
+				ResultGrid.importFile(ResultGrid.local+v, "css");
+//				var oImportCss = window.document.createElement("link");
+//				oImportCss.rel = "stylesheet";
+//				oImportCss.type = "text/css";
+//				oImportCss.href = ResultGrid.local+v;
+//				document.getElementsByTagName("head").item(0).appendChild(oImportCss);   
 				//var oLastJs = document.scripts[document.scripts.length - 1];
 				//$(oLastJs).insertAfter(oImportCss);
 //				oLastJs.insertAdjacentElement('afterEnd', oImportCss);
@@ -108,6 +139,41 @@ var ResultGrid = {
 			jqObj = $.extend(true, jqObj, obj);
 		}
 		
+	},
+	setToolbar : function(valueCfg, jqObj, $grid){
+		var toolbarMenu = valueCfg["toolbar_menu"];
+		if(toolbarMenu.length > 0){
+			if(!ResultGrid._isNull(toolbarMenu[0]["import_js"])){
+				ResultGrid.importFile(ResultGrid.local+toolbarMenu[0]["import_js"], "js");
+			}			
+			var btns = [];
+			for(var i=0; i<toolbarMenu.length; i++){
+				var menu = toolbarMenu[i];
+				ResultGrid["toolbar_"+menu["item_label"]] = menu;
+				if(menu["display"] == 1){
+					if(menu["is_line"] == "0BT"){
+						btns.push("-");
+					}else{
+						var css = {};
+						if(menu["ico"]){
+					      css = {"background" : "transparent url("+ResultGrid.local+"/js/full/toolbar/image/"+menu["ico"]+") no-repeat 0 2px",
+						  		 "padding-left" : "20px"};
+						}
+						btns.push({
+							text : menu["item_label"],
+							css : css,		
+							handler : function(){
+								var ev = ResultGrid["toolbar_"+$.trim($(this).html())]["event"];
+								if(!ResultGrid._isNull(ev)){
+									eval(ev).apply(this, arguments);
+								}								
+							}
+						});
+					}
+				}
+			}
+			jqObj["mytoolbar"] = btns;
+		}
 	},
 	setSqlParam : function(sqlParamData, $grid){
 		if(filterData(sqlParamData) != null){
@@ -203,7 +269,7 @@ $.fn.ResultGrid = function(options){
 		}
 		var postData = options.resultParam || {};
 		var jqObj = $.extend(true, {}, resultGrid_default, options, {"url":GET_DATA_URL+"list/"+options.result,"postData":postData});
-		jqObj["colModel"] = $.merge(colModel || [], options.colModel || []);
+		jqObj["colModel"] = $.merge(colModel || [], options.colModel || []);//数据库列定义+页面列定义
 		if(jqObj["colModel"].length == 0){
 			colData = ResultGrid.getData({url:GET_DATA_URL+"dataColModel/"+options.result});		
 			if(filterData(colData) != null){
@@ -212,9 +278,10 @@ $.fn.ResultGrid = function(options){
 			}
 		}
 		var valueCfg = ResultGrid.getData({url:GET_DATA_URL+"valueCfg/"+options.result});				
-		ResultGrid.setValueCfg(valueCfg, jqObj, $grid);
+		ResultGrid.setValueCfg(valueCfg, jqObj, $grid);		
 		var sqlParamData = ResultGrid.getData({url:GET_DATA_URL+"sqlParam/"+options.result});		
 		ResultGrid.setSqlParam(sqlParamData, $grid);
+		ResultGrid.setToolbar(valueCfg, jqObj, $grid);
 		$grid.jqGrid(jqObj);
 	}else{
 		alert("miss result");
