@@ -248,6 +248,7 @@ var ResultGrid = {
 			postData[$(this).attr("id")] = $(this).val();
 		});		
 		$grid.setGridParam({"page":1});
+		$grid.setGridParam({"postData":""});
 		$grid.setGridParam({"postData":postData});
 		$grid.trigger("reloadGrid");	
 	}
