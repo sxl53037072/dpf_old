@@ -25,6 +25,7 @@ String rootPath = request.getContextPath();
 <link rel="stylesheet" type="text/css" href="<%=rootPath%>/themes/default/validationEngine.jquery.css" />
 <link rel="stylesheet" type="text/css" href="<%=rootPath%>/js/full/toolbar/css/core.css" />
 <link rel="stylesheet" type="text/css" href="<%=rootPath%>/js/full/toolbar/css/Toolbar.css" />
+<link rel="stylesheet" type="text/css" href="<%=rootPath%>/js/full/busiMonitor/ResultGrid.css" />
 <script>
 	//自定义查询根路径
 	ResultGrid.local = '<%=rootPath%>';

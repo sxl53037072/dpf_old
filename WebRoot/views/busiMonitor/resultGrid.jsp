@@ -101,67 +101,16 @@
 		   
 	   </script>
 	<style>
-		#productSellListGrid{
-			width: 90%;
-		}		
-		.productForm #baseInfo {
-			border-collapse: collapse;
-			margin: 5px 0 15px 15px;
-			width: 90%;
-		}		
-		
-		.productForm #baseInfo td {
-			margin: 0px;
-			padding: 5px 2px;			
-		}
-		.productForm #baseInfo input{
-			width:90%
-		}
-		.productForm #baseInfo select {
- 			width:96%; 
-			background-color:#fff;
-			border:1px solid #ccc
-		}
-		.productForm #baseInfo .Title{
-			text-align: right;
-		}
-		.expand {
-			cursor: pointer;
-		}
-		.baseInfo{
-			font-family: "宋体";color:#1e5494;font-size:12px;
-		}
-		textarea{height:60px;width:98%;}
-		.productForm #baseInfo td input[type='checkbox']{
-			width:20px;vertical-align:middle;
-		}	
-		table td.Data{overflow:visible;}	
-		.required{color:red}
 		
 		
-		
-		
-		.grid_search label{
-			font-family: "宋体", Arial, Verdana;font-size: 12px;
-			width: 140px;
-			display: inline-block;
-			text-align: right;
-			line-height: 26px;
-			font-size: 12px;
-			margin-right: 10px;
-		}
-		.grid_search label, .adminform input, .adminform button, .adminform select, .adminform textarea {
-			font-size:12px;
-			font-weight:normal;
-			line-height:20px
-		}
+				
 		
 		
 	</style>
 	</head>	
 	<body >
 	<div id="titleBarDiv" class="pageTitle" style="left: 0px; top: 0px;">
-		<h2><em>热销产品<input type="button" id="refGrid" value="ref" /></em></h2>
+		<h2><input type="button" id="refGrid" value="ref" /></h2>
 	</div>
 	<div id="toolBarDiv" class="pageTool" style="left: 0px; top: 26px;"></div>	
 	

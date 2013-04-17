@@ -172,7 +172,7 @@ var ResultGrid = {
 					}
 				}
 			}
-			jqObj["mytoolbar"] = btns;
+			if(btns.length > 0)jqObj["mytoolbar"] = btns;
 		}
 	},
 	setSqlParam : function(sqlParamData, $grid){
