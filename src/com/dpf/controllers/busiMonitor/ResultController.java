@@ -9,13 +9,6 @@
  **************************************************/
 package com.dpf.controllers.busiMonitor;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
 import com.dpf.domain.Paging;
 import com.dpf.exception.ApplicationException;
 import com.dpf.exception.SystemException;
@@ -31,10 +24,10 @@ import net.paoding.rose.web.annotation.rest.Post;
 public class ResultController {	
 	private ResultService resultService = new ResultService();
 	
-	@Post("colModel/{id}")
-	public Object queryColModel(@Param("id") String id, Invocation inv){
+	@Post("config/{id}")
+	public Object queryConfig(@Param("id") String id, Invocation inv){
 		try {			
-			return resultService.getField(id);
+			return resultService.getConfig(id,inv.getRequest());
 		} catch (ApplicationException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -44,6 +37,7 @@ public class ResultController {
 		}					
 		return null;
 	}
+	
 	@Post("list/{resultKey}")
 	public Object queryData(@Param("resultKey") String id, Invocation inv){
 		try {			
@@ -58,45 +52,6 @@ public class ResultController {
 		return null;
 	}
 
-	@Post("dataColModel/{resultKey}")
-	public Object queryDataColModel(@Param("resultKey") String id, Invocation inv){
-		try {			
-			return resultService.getColModel(inv.getRequest());
-		} catch (ApplicationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-	@Post("valueCfg/{resultKey}")
-	public Object queryValueCfg(@Param("resultKey") String id, Invocation inv){
-		try {			
-			return resultService.getValueCfg(id);
-		} catch (ApplicationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-	@Post("sqlParam/{resultKey}")
-	public Object querySqlParam(@Param("resultKey") String id, Invocation inv){
-		try {			
-			return resultService.getSqlParam(id);
-		} catch (ApplicationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SystemException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 	@Post("execSql")
 	public Object execSql(Invocation inv){
 		try {			

@@ -93,6 +93,10 @@ public class JsonUtil {
 		return null;
 	}
 	public static String rsToColMode(ResultSet rs){
+		JSONObject jsonObject = JsonBiz.getJsonDataForOption(rsToColModeList(rs));
+		return jsonObject.toString();			
+	}
+	public static List<HashMap<String, String>> rsToColModeList(ResultSet rs){
 		List<HashMap<String, String>> colMode = new ArrayList<HashMap<String, String>>();
 		try {
 			ResultSetMetaData rsmd = rs.getMetaData();
@@ -105,12 +109,10 @@ public class JsonUtil {
 				map.put("index", rsmd.getColumnName(i).toUpperCase());
 				colMode.add(map);
 			} 
-			JSONObject jsonObject = JsonBiz.getJsonDataForOption(colMode);
-			return jsonObject.toString();			
+			return colMode;			
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DBCtrl.close(null, rs);
+		} finally {			
 		}
 		return null;
 	}

@@ -121,7 +121,7 @@ var ResultGrid = {
 				});
 			});
 		}			
-		if(!ResultGrid._isNull(valueCfg["dblclick"])){					
+		if(!ResultGrid._isNull(valueCfg["dblclick"])){	
 			jqObj["ondblClickRow"] = function(rowid,iRow,iCol,e){
 				eval(valueCfg["dblclick"])(rowid,iRow,iCol,e);
 			};
@@ -167,8 +167,7 @@ var ResultGrid = {
 		}
 		
 	},
-	setToolbar : function(valueCfg, jqObj, $grid){
-		var toolbarMenu = valueCfg["toolbar_menu"];
+	setToolbar : function(toolbarMenu, jqObj, $grid){
 		if(toolbarMenu && toolbarMenu.length > 0){
 			if(!ResultGrid._isNull(toolbarMenu[0]["import_js"])){
 				ResultGrid.importFile(ResultGrid.local+toolbarMenu[0]["import_js"], "js");
@@ -203,33 +202,29 @@ var ResultGrid = {
 		}
 	},
 	setSqlParam : function(sqlParamData, $grid){
-		if(filterData(sqlParamData) != null){
-			sqlParamData = sqlParamData.data.list;
-			/*
-			 *  <div id="GRIDID_search" class="grid_search">
-			 *		<label id="GRIDID_COLUMNID_label">XXXX</label>
-			 *		<input type="text" ID="COLUMNID" />
-			 *	</div>
-			 */
-			if(sqlParamData.length > 0){
-				var gridId = $grid.attr("id");
-				var $gridSearch = $("<div id='"+gridId+"_search' to='"+gridId+"' class='grid_search'>");
-				for(var i=0; i<sqlParamData.length; i++){
-					var $label = $("<label id='"+(gridId+"_"+sqlParamData[i]["param_name"]+"_label")+"' >"+sqlParamData[i]["param_label"]+"</label>");
-					var $el = ResultGrid._setSearch(sqlParamData[i]);					
-					$gridSearch.append($label).append($el);
-					if(i!=0 && i%2==0){
-						$gridSearch.append("<div></div>");
-					}
-				}	
-				var $search_btn = $("<input type='button' onclick='ResultGrid.search(this)' style='margin-left:5px' id='"+gridId+"_search_btn' value='搜索' /> ");
-				$gridSearch.append($search_btn);
-				$grid.before($gridSearch);
-			}
-			
+		/*
+		 *  <div id="GRIDID_search" class="grid_search">
+		 *		<label id="GRIDID_COLUMNID_label">XXXX</label>
+		 *		<input type="text" ID="COLUMNID" />
+		 *	</div>
+		 */
+		if(sqlParamData.length > 0){
+			var gridId = $grid.attr("id");
+			var $gridSearch = $("<div id='"+gridId+"_search' to='"+gridId+"' class='grid_search'>");
+			for(var i=0; i<sqlParamData.length; i++){
+				var $label = $("<label id='"+(gridId+"_"+sqlParamData[i]["param_name"]+"_label")+"' >"+sqlParamData[i]["param_label"]+"</label>");
+				var $el = ResultGrid._setSearch(sqlParamData[i]);					
+				$gridSearch.append($label).append($el);
+				if(i!=0 && i%2==0){
+					$gridSearch.append("<div></div>");
+				}
+			}	
+			var $search_btn = $("<input type='button' onclick='ResultGrid.search(this)' style='margin-left:5px' id='"+gridId+"_search_btn' value='搜索' /> ");
+			$gridSearch.append($search_btn);
+			$grid.before($gridSearch);
 		}
 	},
-	_setSearch : function(data){
+	_setSearch : function(data){		
 		var comp_name = data["comp_name"];
 		var comp_cfg = data["comp_cfg"] || {};
 		var $ele;
@@ -285,33 +280,22 @@ var ResultGrid = {
 };
 
 $.fn.ResultGrid = function(options){	
-	window.ttt = 1;
 	var $grid = $(this);
 	var resultGrid_default = {
 		mtype : 'post',
 		loadui : "block"
 	};
 	if(options.result){
-		var colModel = [];
-		var colData = ResultGrid.getData({url:ResultGrid.GET_DATA_URL+"colModel/"+options.result});		
-		if(filterData(colData) != null){
-			colModel = colData.data.list;
+		var gridConfig = ResultGrid.getData({url:ResultGrid.GET_DATA_URL+"config/"+options.result});	
+		if(gridConfig && gridConfig.succeed && gridConfig.data){
+			gridConfig = gridConfig.data;
 		}
 		var postData = options.resultParam || {};
 		var jqObj = $.extend(true, {}, resultGrid_default, options, {"url":ResultGrid.local+"/"+ResultGrid.GET_DATA_URL+"list/"+options.result,"postData":postData});
-		jqObj["colModel"] = $.merge(colModel || [], options.colModel || []);//数据库列定义+页面列定义
-		if(jqObj["colModel"].length == 0){
-			colData = ResultGrid.getData({url:ResultGrid.GET_DATA_URL+"dataColModel/"+options.result});		
-			if(filterData(colData) != null){
-				colModel = colData.data.list;
-				jqObj["colModel"] = colModel;
-			}
-		}
-		var valueCfg = ResultGrid.getData({url:ResultGrid.GET_DATA_URL+"valueCfg/"+options.result});				
-		ResultGrid.setValueCfg(valueCfg, jqObj, $grid);		
-		var sqlParamData = ResultGrid.getData({url:ResultGrid.GET_DATA_URL+"sqlParam/"+options.result});		
-		ResultGrid.setSqlParam(sqlParamData, $grid);
-		ResultGrid.setToolbar(valueCfg, jqObj, $grid);
+		jqObj["colModel"] = $.merge(gridConfig["colModel"] || [], options.colModel || []);//数据库列定义+页面列定义
+		ResultGrid.setValueCfg(gridConfig["valueCfg"], jqObj, $grid);		
+		ResultGrid.setSqlParam(gridConfig["sqlParam"], $grid);
+		ResultGrid.setToolbar(gridConfig["toolbar_menu"], jqObj, $grid);
 		$grid.jqGrid(jqObj);
 	}else{
 		alert("miss result");

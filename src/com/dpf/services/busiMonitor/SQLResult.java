@@ -11,6 +11,7 @@ package com.dpf.services.busiMonitor;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -80,19 +81,19 @@ public class SQLResult {
 		}
 		
 	}
-	public String getColumnModel(Map map){
+	public List<HashMap<String, String>> getColumnModelList(Map map){
         this.resultNode = JsonUtil.jsonToXml(map);
         Connection conn = null;
         ResultSet rs = null;
 		try{
 			conn = DBCtrl.getConnection();
-			this.buildSQL((String)map.get("resultKey"));
+			this.buildSQL((String)map.get("id"));
 			this.buildPageSQL();
 			rs = this.action.execute(conn, this.sqlInfo);	
-			return JsonUtil.rsToColMode(rs);
+			return JsonUtil.rsToColModeList(rs);
 		}catch(Exception e){
 			e.printStackTrace();
-			return JsonBiz.isSucceed(false, e.toString()).toString();
+			return null;
 		}finally{
 			DBCtrl.close(conn, rs);
 		}

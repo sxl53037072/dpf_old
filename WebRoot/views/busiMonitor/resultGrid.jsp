@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"> 
 <html>
 	<head>   
-	   <title>查询</title>
+	   <title>查询11</title>
 	   <%@ include file="../../include/include.jsp" %>
 	   <script>
 	   		

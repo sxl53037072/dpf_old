@@ -29,16 +29,39 @@ public class ResultService {
 	private static Logger logger = Logger
 			.getLogger(ResultService.class.getName());
 	/**
-	 * 功能:	获取自定义查询列定义
+	 * 功能:	获取自定义查询各项配置
 	 *
-	 * @param key
-	 * @return
+	 * @param key  SQL_ID标识
+	 * @param request  请求
+	 * @return  map 
+	 * {
+	 * 		colModel : [],          //列定义
+	 *      valueCfg : {},         //表格基本配置
+	 *      toolbar_menu : [],     //工具栏定义
+	 *      sqlParam : []          //搜索控件配置
+	 * }
 	 * @throws ApplicationException
 	 * @throws SystemException
 	 */
-	public Object getField(String key) throws ApplicationException, SystemException{
-		return JsonBiz.getJsonDataForOption(SQLDao.getFieldJson(key));		
+	public Object getConfig(String key, HttpServletRequest request) throws ApplicationException, SystemException{
+		HashMap<String, Object> configMap = new HashMap<String, Object>();						
+		List<HashMap<String, String>> colList = SQLDao.getFieldJson(key);
+		SQLResult sqlResult = new SQLResult();
+		if(colList.size() == 0){
+			colList = sqlResult.getColumnModelList(DataUtil.requestToMap(request));
+		}
+		configMap.put("colModel", colList);
+		HashMap<String, Object> valueCfgMap = SQLDao.getValueCfg(key);
+		configMap.put("valueCfg", valueCfgMap);
+		if(!DataUtil.isNullOrEmpty(String.valueOf(valueCfgMap.get("toolbar_menu_id")))){
+			List<HashMap<String, String>> menuList = SQLDao.getSysMenuItem(valueCfgMap.get("toolbar_menu_id").toString());
+			configMap.put("toolbar_menu", menuList);
+		}
+		List<HashMap<String, String>> sqlParam = SQLDao.getSqlParam(key);
+		configMap.put("sqlParam", sqlParam);
+		return JsonBiz.getJsonDataForOneRecord(configMap);
 	}
+	
 	/**
 	 * 功能:	执行SQL返回结果
 	 *
@@ -50,46 +73,7 @@ public class ResultService {
 	public Object getPageResultJson(HttpServletRequest request) throws ApplicationException, SystemException{
 		SQLResult sqlResult = new SQLResult();
 		return JSONObject.fromObject(sqlResult.getPageResultJson(DataUtil.requestToMap(request)));
-	}
-	/**
-	 * 功能:	根据SQL获取列定义，只在未配置GET_VALUE_CFG_FIELD时返回
-	 *
-	 * @param request
-	 * @return
-	 * @throws ApplicationException
-	 * @throws SystemException
-	 */
-	public Object getColModel(HttpServletRequest request) throws ApplicationException, SystemException{
-		SQLResult sqlResult = new SQLResult();
-		return JSONObject.fromObject(sqlResult.getColumnModel(DataUtil.requestToMap(request)));
-	}
-	/**
-	 * 功能:	获取自定义查询配置 包括基本的一些grid配置/及工具栏按钮配置
-	 *
-	 * @param key
-	 * @return
-	 * @throws ApplicationException
-	 * @throws SystemException
-	 */
-	public Object getValueCfg(String key) throws ApplicationException, SystemException{
-		HashMap<String, Object> map = SQLDao.getValueCfg(key);
-		if(!DataUtil.isNullOrEmpty(String.valueOf(map.get("toolbar_menu_id")))){
-			List<HashMap<String, String>> list = SQLDao.getSysMenuItem(map.get("toolbar_menu_id").toString());
-			map.put("toolbar_menu", list);
-		}		
-		return JSONObject.fromObject(map);
-	}
-	/**
-	 * 功能:	获取搜索控件配置
-	 *
-	 * @param key
-	 * @return
-	 * @throws ApplicationException
-	 * @throws SystemException
-	 */
-	public Object getSqlParam(String key) throws ApplicationException, SystemException{
-		return JsonBiz.getJsonDataForOption(SQLDao.getSqlParam(key));		
-	}
+	}	
 	/**
 	 * 功能:	动态执行SQL
 	 *
