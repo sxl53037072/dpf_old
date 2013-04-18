@@ -51,7 +51,8 @@ public class SQLDao {
 					"       T.IMPORT_CSS,\n" + 
 					"       T.COLUMN_CFG_TYPE,\n" + 
 					"       T.DEFAULT_SEARCH,\n" + 
-					"       T.FILED_SEARCH\n" + 
+					"       T.FILED_SEARCH,\n" + 
+					"       T.COLUMN_NUM\n" + 
 					"  FROM GET_VALUE_SHOW_CFG T\n" + 
 					" WHERE T.GET_VALUE_CFG_ID = ?";
 	

@@ -94,6 +94,14 @@ var ResultGrid = {
 	   }
 	   return toObj;    
 	},
+	setColModel : function(colModel){
+		for(var i=0; i<colModel.length; i++){
+			if(!this._isNull(colModel[i]["config_script"])){
+				colModel[i] = $.extend(colModel[i], ResultGrid.jsonToObj(colModel[i]["config_script"]));
+			}
+		}
+		return colModel;
+	},
 	setValueCfg : function(valueCfg, jqObj, $grid){
 		if(!ResultGrid._isNull(valueCfg["title"])){
 			jqObj["caption"] = valueCfg["title"];
@@ -130,17 +138,6 @@ var ResultGrid = {
 			var jsArr = valueCfg["import_js"].split(",");
 			$.each(jsArr, function(i, v){
 				ResultGrid.importFile(ResultGrid.local+v, "js");
-//				var oImportJs = window.document.createElement("script");
-//				oImportJs.language = "javascript";
-//				oImportJs.type = "text/javascript";
-//				oImportJs.defer = true;
-//				oImportJs.src = ResultGrid.local+v;
-				//var oLastJs = document.scripts[document.scripts.length - 1];
-				//$(oLastJs).insertAfter(oImportJs);
-//				document.getElementsByTagName("head").item(0).appendChild(oImportJs);   
-				//oLastJs.insertAdjacentElement('afterEnd', oImportJs);
-//				var $js = $("<script language='javascript' type='text/javascript' defer='true' src='"+ResultGrid.local+v+"'> ");
-//				$("script").last().insertAfter($js);
 			});		
 		}
 		
@@ -149,16 +146,6 @@ var ResultGrid = {
 			var cssArr = valueCfg["import_css"].split(",");
 			$.each(cssArr, function(i, v){
 				ResultGrid.importFile(ResultGrid.local+v, "css");
-//				var oImportCss = window.document.createElement("link");
-//				oImportCss.rel = "stylesheet";
-//				oImportCss.type = "text/css";
-//				oImportCss.href = ResultGrid.local+v;
-//				document.getElementsByTagName("head").item(0).appendChild(oImportCss);   
-				//var oLastJs = document.scripts[document.scripts.length - 1];
-				//$(oLastJs).insertAfter(oImportCss);
-//				oLastJs.insertAdjacentElement('afterEnd', oImportCss);
-//				var $css = $("<link rel='stylesheet' type='text/css' href='"+ResultGrid.local+v+"'> ");
-//				$("script").last().insertAfter($css);
 			});		
 		}
 		if(!ResultGrid._isNull(valueCfg["config_script"])){
@@ -201,7 +188,7 @@ var ResultGrid = {
 			if(btns.length > 0)jqObj["mytoolbar"] = btns;
 		}
 	},
-	setSqlParam : function(sqlParamData, $grid){
+	setSqlParam : function(sqlParamData, valueCfg, $grid){
 		/*
 		 *  <div id="GRIDID_search" class="grid_search">
 		 *		<label id="GRIDID_COLUMNID_label">XXXX</label>
@@ -211,11 +198,15 @@ var ResultGrid = {
 		if(sqlParamData.length > 0){
 			var gridId = $grid.attr("id");
 			var $gridSearch = $("<div id='"+gridId+"_search' to='"+gridId+"' class='grid_search'>");
+			var columnNum = 3;
+			if(!this._isNull(valueCfg)){
+				columnNum = valueCfg["column_num"] || 3;
+			}
 			for(var i=0; i<sqlParamData.length; i++){
 				var $label = $("<label id='"+(gridId+"_"+sqlParamData[i]["param_name"]+"_label")+"' >"+sqlParamData[i]["param_label"]+"</label>");
 				var $el = ResultGrid._setSearch(sqlParamData[i]);					
 				$gridSearch.append($label).append($el);
-				if(i!=0 && i%2==0){
+				if(i!=0 && (i+1)%columnNum==0){
 					$gridSearch.append("<div></div>");
 				}
 			}	
@@ -254,11 +245,11 @@ var ResultGrid = {
 			}			
 		}
 		if($ele){
-			for(var o in comp_cfg){
-				if(o == "width" || o == "height"){
-					$ele.css({o: comp_cfg[o]});
+			for(var c in comp_cfg){
+				if(c == "width" || c == "height"){
+					$ele.css(c, comp_cfg[c]);
 				}else {
-					$ele.attr(o, comp_cfg[o]);
+					$ele.attr(c, comp_cfg[c]);
 				}				
 			}	
 		}
@@ -292,12 +283,12 @@ $.fn.ResultGrid = function(options){
 		}
 		var postData = options.resultParam || {};
 		var jqObj = $.extend(true, {}, resultGrid_default, options, {"url":ResultGrid.local+"/"+ResultGrid.GET_DATA_URL+"list/"+options.result,"postData":postData});
-		jqObj["colModel"] = $.merge(gridConfig["colModel"] || [], options.colModel || []);//数据库列定义+页面列定义
+		jqObj["colModel"] = $.merge(ResultGrid.setColModel(gridConfig["colModel"]) || [], options.colModel || []);//数据库列定义+页面列定义		
 		ResultGrid.setValueCfg(gridConfig["valueCfg"], jqObj, $grid);		
-		ResultGrid.setSqlParam(gridConfig["sqlParam"], $grid);
+		ResultGrid.setSqlParam(gridConfig["sqlParam"], gridConfig["valueCfg"], $grid);
 		ResultGrid.setToolbar(gridConfig["toolbar_menu"], jqObj, $grid);
 		$grid.jqGrid(jqObj);
 	}else{
-		alert("miss result");
+		alert("缺少 result 参数");
 	}
 };

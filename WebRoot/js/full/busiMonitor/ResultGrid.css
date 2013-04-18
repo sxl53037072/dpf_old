@@ -32,3 +32,9 @@
 	font-weight:normal;
 	line-height:20px
 }
+.grid_search select{
+	width: 156px;
+}
+.grid_search input[type="text"]{
+	width: 150px;
+}
