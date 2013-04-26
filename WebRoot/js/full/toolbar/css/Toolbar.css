@@ -1,5 +1,7 @@
 @charset "utf-8";
-
+.toolbar table{
+	table-layout: auto;
+}
 .toolbar {
   background-color: #D6E3F3;
   width: 100%;

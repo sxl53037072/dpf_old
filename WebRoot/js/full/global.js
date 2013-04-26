@@ -6,3 +6,10 @@ function filterData(d){
 	}
 	
 }
+function filterHtml(data){
+	data = data.replace("<", "&lt;");
+	data = data.replace(">", "&gt;");
+	data = data.replace("&", "&amp;");
+	data = data.replace('"', "&quot;");
+	return data;
+}

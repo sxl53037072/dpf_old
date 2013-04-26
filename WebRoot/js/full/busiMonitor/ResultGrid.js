@@ -117,7 +117,7 @@ var ResultGrid = {
 		if(valueCfg["is_forcefit"] == "0BF"){
 			jqObj["shrinkToFit"] = true;
 		}else{
-			jqObj["shrinkToFit"] = false;
+			jqObj["shrinkToFit"] = true;//false
 		}		
 		if(!ResultGrid._isNull(valueCfg["hidden_columns"])){
 			var hideArr = valueCfg["hidden_columns"].split(",");
@@ -283,7 +283,7 @@ $.fn.ResultGrid = function(options){
 		}
 		var postData = options.resultParam || {};
 		var jqObj = $.extend(true, {}, resultGrid_default, options, {"url":ResultGrid.local+"/"+ResultGrid.GET_DATA_URL+"list/"+options.result,"postData":postData});
-		jqObj["colModel"] = $.merge(ResultGrid.setColModel(gridConfig["colModel"]) || [], options.colModel || []);//数据库列定义+页面列定义		
+		jqObj["colModel"] = $.merge(ResultGrid.setColModel(gridConfig["colModel"]) || [], options.colModel || []);//数据库列定义+页面列定义	
 		ResultGrid.setValueCfg(gridConfig["valueCfg"], jqObj, $grid);		
 		ResultGrid.setSqlParam(gridConfig["sqlParam"], gridConfig["valueCfg"], $grid);
 		ResultGrid.setToolbar(gridConfig["toolbar_menu"], jqObj, $grid);

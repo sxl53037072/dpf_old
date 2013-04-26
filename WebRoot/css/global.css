@@ -1,0 +1,130 @@
+.adminform label{
+	font-family: "宋体", Arial, Verdana;font-size: 12px;
+	width: 140px;
+	display: inline-block;
+	text-align: right;
+	line-height: 26px;
+	font-size: 12px;
+	margin-right: 10px;
+}
+
+.adminform label .required{
+	color: red;
+	font-weight: normal;
+}
+ .required1{
+	color: red;
+	font-weight: normal;
+}
+.adminform textarea{
+	width: 572px;
+}
+.adminform td,.adminform th,.adminform li,.adminform p,.adminform span,.adminform textarea,.adminform div,.adminform h1,.adminform h2,.adminform h3,.adminform select,.adminform input{font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;font-size: 12px;}
+.adminform button, .adminform input, .adminform select, .adminform textarea {
+	margin:0;
+	font-size:100%;
+	vertical-align:middle
+}
+.adminform button, .adminform input {
+	/* *overflow:visible; */
+	line-height:normal
+}
+.adminform button::-moz-focus-inner, .adminform input::-moz-focus-inner {
+padding:0;
+border:0
+}
+.adminform button, .adminform input[type="button"], .adminform input[type="reset"], .adminform input[type="submit"] {
+	cursor:pointer;
+	-webkit-appearance:button
+}
+.adminform input[type="search"] {
+	-webkit-box-sizing:content-box;
+	-moz-box-sizing:content-box;
+	box-sizing:content-box;
+	-webkit-appearance:textfield
+}
+.adminform input[type="search"]::-webkit-search-decoration, .adminform input[type="search"]::-webkit-search-cancel-button {
+-webkit-appearance:none
+}
+.adminform textarea {
+	overflow:auto;
+	vertical-align:top
+}
+.adminform  td,.adminform th,.adminform li,.adminform p,.adminform span,.adminform textarea,.adminform div,.adminform h1,.adminform h2,.adminform h3,.adminform select,.adminform input{font-family: "宋体", Arial, Verdana;font-size: 12px;}
+ .adminform label, .adminform input, .adminform button, .adminform select, .adminform textarea {
+	font-size:12px;
+	font-weight:normal;
+	line-height:20px
+}
+.adminform input, .adminform button, .adminform select, .adminform textarea {
+	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif
+}
+label {
+	display:block;
+	margin-bottom:5px
+}
+.adminform select, .adminform textarea, .adminform input[type="text"], .adminform input[type="password"], .adminform input[type="datetime"], .adminform input[type="datetime-local"], .adminform input[type="date"], .adminform input[type="month"], .adminform input[type="time"], .adminform input[type="week"], .adminform input[type="number"], .adminform input[type="email"], .adminform input[type="url"], .adminform input[type="search"], .adminform input[type="tel"], .adminform input[type="color"], .adminform .uneditable-input {
+	display:inline-block;
+	height:20px;
+	padding:2px 6px;
+	margin-bottom:9px;
+	font-size:12px;
+	line-height:20px;
+	color:#555;
+	-webkit-border-radius:3px;
+	-moz-border-radius:3px;
+	border-radius:3px
+}
+.adminform input{
+	width:206px
+}
+.adminform textarea {
+	height:auto
+}
+.adminform textarea, .adminform input[type="text"], .adminform input[type="password"], .adminform .uneditable-input {
+	background-color:#fff;
+	border:1px solid #ccc;
+	-webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	-moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075);
+	box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075);
+-webkit-transition:border linear .2s, box-shadow linear .2s;
+-moz-transition:border linear .2s, box-shadow linear .2s;
+-o-transition:border linear .2s, box-shadow linear .2s;
+transition:border linear .2s, box-shadow linear .2s
+}
+.adminform textarea:focus, .adminform input[type="text"]:focus, .adminform input[type="password"]:focus, .adminform .uneditable-input:focus {
+	border-color:rgba(82, 168, 236, 0.8);
+	outline:0;
+	outline:thin dotted \9;
+	-webkit-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+	-moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6);
+	box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(82, 168, 236, 0.6)
+}
+.adminform input[type="radio"], .adminform input[type="checkbox"] {
+	margin:4px 0 0;
+	margin-top:1px \9;
+*margin-top:0;
+	line-height:normal;
+	cursor:pointer
+}
+.adminform input[type="file"], .adminform input[type="image"], .adminform input[type="submit"], .adminform input[type="reset"],.adminform  input[type="button"],.adminform  input[type="radio"], .adminform input[type="checkbox"] {
+	width:auto
+}
+.adminform select, .adminform input[type="file"] {
+	height:28px;
+*margin-top:4px;
+	line-height:28px
+}
+.adminform select {
+	width:206px;
+	background-color:#fff;
+	border:1px solid #ccc
+}
+.adminform select[multiple], .adminform select[size] {
+	height:auto
+}
+.adminform select:focus, .adminform input[type="file"]:focus, .adminform input[type="radio"]:focus, .adminform input[type="checkbox"]:focus {
+	outline:thin dotted #333;
+	outline:5px auto -webkit-focus-ring-color;
+	outline-offset:-2px
+}

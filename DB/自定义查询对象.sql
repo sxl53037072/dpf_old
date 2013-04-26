@@ -1,6 +1,6 @@
 -----------------------------------------------------
 -- Export file for user CRMII                      --
--- Created by Administrator on 2013/4/17, 15:50:41 --
+-- Created by Administrator on 2013/4/26, 16:45:54 --
 -----------------------------------------------------
 
 spool 自定义查询对象.log
@@ -169,7 +169,8 @@ create table crmii.GET_VALUE_SHOW_CFG
   import_css       VARCHAR2(4000),
   column_cfg_type  VARCHAR2(7),
   default_search   VARCHAR2(3),
-  filed_search     VARCHAR2(3)
+  filed_search     VARCHAR2(3),
+  column_num       NUMBER(3) default 3
 )
 tablespace CRMII
   pctfree 10
@@ -213,6 +214,8 @@ comment on column crmii.GET_VALUE_SHOW_CFG.default_search
   is '默认是否显示查询';
 comment on column crmii.GET_VALUE_SHOW_CFG.filed_search
   is '表头列查询';
+comment on column crmii.GET_VALUE_SHOW_CFG.column_num
+  is '每行列数';
 alter table crmii.GET_VALUE_SHOW_CFG
   add constraint PK_GET_VALUE_SHOW_CFG primary key (GET_VALUE_CFG_ID)
   using index 
