@@ -16,7 +16,7 @@ $skinList:[
 $wdate:true,
 $crossFrame:true,
 $preLoad:false,
-$dpPath:"",
+$dpPath:"",///dpf-deploy/js/full/My97DatePicker/
 doubleCalendar:false,
 enableKeyboard:true,
 enableInputMask:true,

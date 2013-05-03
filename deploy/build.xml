@@ -1,0 +1,157 @@
+<project name="dpf" default="all" basedir=".">
+
+  <property file="build.properties"/>
+  <property file="ant.properties"/>
+
+  <path id="classpath">
+    <pathelement location="${src}/"/>
+    <fileset dir="${lib}" includes="**/*.jar" />
+  </path>
+
+  <target name="clean" >
+    <delete dir="${wars}"/>
+    <delete dir="${webapp}"/>
+    <delete>
+      <fileset dir="${src}" >
+        <include name="**/*.class"/>
+      </fileset>
+    </delete>
+  </target>
+
+  <target name="prepare" depends="clean">
+    <mkdir dir="${wars}"/>
+    <mkdir dir="${webapp}"/>
+    <mkdir dir="${webapp}/WEB-INF/classes"/>
+    <mkdir dir="${webapp}/WEB-INF/lib"/>
+  </target>
+
+  <target name="compile" depends="prepare">
+    <javac encoding="${charset}" srcdir="${src}" destdir="${webapp}/WEB-INF/classes" deprecation="off" debug="${debug}">
+      <classpath refid="classpath"/>
+    </javac>
+  </target>
+
+  <target name="assemble.view">
+    <copy todir="${webapp}">
+      <fileset dir="${web}">
+        <include name="**/*.jsp"/>
+        <include name="**/*.html"/>
+      </fileset>
+ 
+    </copy>
+  </target>
+ 
+  <target name="assemble" depends="compile">
+    <copy todir="${webapp}/WEB-INF/classes">
+      <fileset dir="${src}" >
+        <exclude name="**/*.java"/>
+        <exclude name="**/*.class"/>
+      </fileset>
+    </copy>
+    <copy todir="${webapp}/WEB-INF/lib">
+      <fileset dir="${lib}" />
+    </copy>
+    <copy todir="${webapp}">
+      <fileset dir="${web}" />
+    </copy>
+  </target>
+
+  <target name="war" depends="assemble,replaceJSCSS">
+    <jar jarfile="${wars}/dpf.war">
+      <fileset dir="${webapp}">
+        <include name="**/*"/>
+      </fileset>
+    </jar>
+  </target>
+	<!-- 合并js文件 -->
+    <target name="concatjs" depends="cleanjs"> 
+        <concat destfile="${jspath}/alltemp.js" encoding="${charset}" outputencoding="${charset}"> 
+            <path path="${jspath}/jquery-1.7.2.js" /> 
+        	<path path="${jspath}/jqGrid/js/jquery.jqGrid.src.js" /> 
+        	<path path="${jspath}/jqGrid/js/i18n/grid.locale-cn.js" /> 
+        	<path path="${jspath}/jquery-ui/jquery-ui.js" /> 
+    		<path path="${jspath}/jquery-layout/jquery.layout-latest.js" /> 
+    		<path path="${jspath}/jqGrid/js/jquery.validationEngine.js" /> 
+    		<path path="${jspath}/jqGrid/js/jquery.validationEngine-zh_CN.js" />
+        	<path path="${jspath}/busiMonitor/ResultGrid.js" />
+        	<path path="${jspath}/My97DatePicker/WdatePicker.js" />        	
+        	<path path="${jspath}/toolbar/js/Toolbar.js" />
+        	<path path="${jspath}/jquery-ztree/jquery.ztree.all-3.5.js" />
+        	<path path="${jspath}/global.js" />
+        </concat> 
+        <replaceregexp match="DEBUG" replace="" flags="g" byline="true" file="${jspath}/alltemp.js" encoding="${charset}" /> 
+    </target>
+	<!-- 压缩js文件 -->
+	<target name="compressjs" depends="concatjs">
+        <echo message="start compress js" /> 
+        <java jar="yuicompressor-2.4.jar" fork="true" failonerror="false"> 
+            <arg line="--type js --charset ${charset} --nomunge ${jspath}/alltemp.js -o ${jspathto}/all.min.js" /> 
+        </java> 
+        <echo message="end compress js" /> 
+   </target>
+	<!-- 清理js文件 -->
+	<target name="cleanjs" >
+	    <delete>
+	      <fileset dir="${jspath}" >
+	        <include name="all.js"/>
+	      	<include name="alltemp.js"/>
+	      </fileset>
+	    </delete>
+	  </target> 
+	<!-- 清理css文件 -->
+	<target name="cleancss" >
+	    <delete>
+	      <fileset dir="${csspath}" >
+	        <include name="all.css"/>
+	      	<include name="alltemp.css"/>
+	      </fileset>
+	    </delete>
+	</target>
+	<!-- 合并css文件 -->
+	<target name="concatcss" depends="cleancss"> 
+	        <concat destfile="${csspath}/alltemp.css" encoding="${charset}" outputencoding="${charset}"> 
+	            <path path="${jspath}/jqGrid/themes/redmond/jquery-ui-1.8.2.custom.css" /> 
+	        	<path path="${jspath}/jqGrid/themes/ui.jqgrid.css" /> 
+	        	<path path="${jspath}/themes/default/validationEngine.jquery.css" />
+	        	<path path="${jspath}/toolbar/css/core.css" /> 
+	        	<path path="${jspath}/toolbar/css/Toolbar.css" /> 
+	        	<path path="${jspath}/jquery-layout/jquery.layout.css" /> 
+	        	<path path="${jspath}/jquery-ztree/jquery.ztree.css" />
+	        	<path path="${jspath}/busiMonitor/ResultGrid.css" />
+	        	<path path="${web}/css/global.css" />
+	        </concat> 
+	        <replaceregexp match="DEBUG" replace="" flags="g" byline="true" file="${csspath}/alltemp.css" encoding="${charset}" /> 
+	    </target>
+	<!-- 压缩css文件 -->
+	<target name="compresscss" depends="concatcss">
+	        <echo message="start compress css" /> 
+	        <java jar="yuicompressor-2.4.jar" fork="true" failonerror="false"> 
+	            <arg line="--type css --charset ${charset} --nomunge ${csspath}/alltemp.css -o ${csspathto}/all.min.css" /> 
+	        </java> 
+	        <echo message="end compress css" /> 
+	</target> 
+	<!-- 时间格式化 -->
+   <tstamp>
+       <format property="touch.time" pattern="yyyyMMddHHmmss" offset="0" unit="hour"/>
+   </tstamp>
+	<!-- 把时间写入到配置文件中 -->
+	<target name="timestampTarget" >
+		<echo message="${touch.time}" />
+		<delete file="webapp/WEB-INF/classes/ant.properties"/>
+		<copy file="ant.properties" tofile="webapp/WEB-INF/classes/ant.properties"/>
+		<echo message="v=${v}" />
+		<replace file="webapp/WEB-INF/classes/ant.properties" >
+			<replacefilter  token = "v=${v}" value = "v=${touch.time}" />
+		</replace>
+	</target>
+	<!-- 替换include.jsp文件 -->
+	<target name="replaceJSCSS" depends="compressjs,compresscss,timestampTarget">
+		<echo message="start replace file" />
+		<delete file="webapp/include/include.jsp"/>
+		<copy file="include.jsp" tofile="webapp/include/include.jsp"/>
+		<echo message="end replace file" />
+	</target>
+  <target name="all" depends="war" />
+
+</project>
+
