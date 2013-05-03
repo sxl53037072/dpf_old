@@ -22,6 +22,7 @@ String baseJsPath = "full";
 <script type="text/javascript" src="<%=rootPath%>/js/<%=baseJsPath %>/busiMonitor/ResultGrid.js"></script>
 <script type="text/javascript" src="<%=rootPath%>/js/<%=baseJsPath %>/toolbar/js/Toolbar.js"></script>
 <script type="text/javascript" src="<%=rootPath%>/js/<%=baseJsPath %>/jquery-ztree/jquery.ztree.all-3.5.js"></script>
+<script type="text/javascript" src="<%=rootPath%>/js/<%=baseJsPath %>/jquery-combogrid/plugin/jquery.ui.combogrid-1.6.2.js"></script>
 <script type="text/javascript" src="<%=rootPath%>/js/<%=baseJsPath %>/global.js"></script>
 
 <link rel="stylesheet" type="text/css"	href="<%=rootPath%>/js/<%=baseJsPath %>/jqGrid/themes/redmond/jquery-ui-1.8.2.custom.css" />
@@ -32,6 +33,7 @@ String baseJsPath = "full";
 <link rel="stylesheet" type="text/css" href="<%=rootPath%>/js/<%=baseJsPath %>/toolbar/css/Toolbar.css" />
 <link rel="stylesheet" type="text/css" href="<%=rootPath%>/js/<%=baseJsPath %>/jquery-layout/jquery.layout.css" />
 <link rel="stylesheet" type="text/css" href="<%=rootPath%>/js/<%=baseJsPath %>/jquery-ztree/jquery.ztree.css" />
+<link rel="stylesheet" type="text/css" href="<%=rootPath%>/js/<%=baseJsPath %>/jquery-combogrid/jquery.ui.combogrid.css" />
 <link rel="stylesheet" type="text/css" href="<%=rootPath%>/js/<%=baseJsPath %>/busiMonitor/ResultGrid.css" />
 <link rel="stylesheet" type="text/css" href="<%=rootPath%>/css/global.css" />
 <script>

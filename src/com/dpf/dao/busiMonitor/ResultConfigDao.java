@@ -42,6 +42,9 @@ public class ResultConfigDao {
 			"WHERE SQL_ID = ?";
 	
 	private static final String TOOLBAR_SELECT_SQL = 
+			"SELECT A.SYS_FUNC_MENU_GROUP_ID, A.REMARK FROM SYS_FUNC_MENU_GROUP A order by SYS_FUNC_MENU_GROUP_ID";
+	
+	private static final String TOOLBAR_DETAIL_SELECT_SQL = 
 			"SELECT A.SYS_FUNC_MENU_GROUP_ID AS \"groupId\",\n" +
 					"       C.ITEM_LABEL AS \"itemLabel\",\n" + 
 					"       C.EVENT AS \"event\",\n" + 
@@ -54,7 +57,7 @@ public class ResultConfigDao {
 					"       b.menu_name_cn as \"menuNameCn\"\n" + 
 					"  FROM SYS_FUNC_MENU_GROUP A, SYS_FUNC_MENU B, SYS_FUNC_MENU_ITEM C\n" + 
 					" WHERE A.SYS_FUNC_MENU_GROUP_ID = B.FUNC_MENU_GROUP_ID\n" + 
-					"   AND B.FUNC_MENU_GROUP_ID = C.FUNC_MENU_GROUP_ID AND A.SYS_FUNC_MENU_GROUP_ID = ?";
+					"   AND B.FUNC_MENU_GROUP_ID = C.FUNC_MENU_GROUP_ID AND A.SYS_FUNC_MENU_GROUP_ID = ? order by c.sort_id";
 	
 
 	public HashMap<String, Object> getConfig(HttpServletRequest request){
@@ -98,6 +101,10 @@ public class ResultConfigDao {
 	}
 	
 	public HashMap<String, Object> toolbarList(HttpServletRequest request){
-		return CommonOutBiz.commonOutJqGrid(request, TOOLBAR_SELECT_SQL, new Object[]{request.getParameter("groupId")});
+		return CommonOutBiz.commonOutJqGrid(request, TOOLBAR_SELECT_SQL, null);
+	}
+	
+	public HashMap<String, Object> toolbarDetail(HttpServletRequest request){
+		return CommonOutBiz.commonOutJqGrid(request, TOOLBAR_DETAIL_SELECT_SQL, new Object[]{request.getParameter("groupId")});
 	}
 }

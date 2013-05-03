@@ -36,7 +36,7 @@
 							text : "新增",
 							cuscls : "add",
 							handler : function(){	
-								setToolbarGrid();
+								setToolbar();
 								$("#resultConfig_dialog").show().dialog({
 									title : "新增配置",
 									height : 688,
@@ -84,10 +84,10 @@
 											$("#add_"+k+"_id").html(rowData[k]);
 										}
 									}
-									setToolbarGrid(rowData.toolbarMenuId);
+									setToolbar(rowData.toolbarMenuId);
 									$("#resultConfig_dialog").show().dialog({
 										title : "修改配置",
-										height : 388,
+										height : 688,
 										width : 960,
 										model : true,
 										buttons : {										
@@ -122,7 +122,45 @@
 					]
 			   });
 		   });
-		   function setToolbarGrid(groupId){
+		   function setToolbar(groupId){
+			   
+			   if($( "#toolbar" ).hasClass("ui-autocomplete-input")){
+					$( "#toolbar" ).val("").attr("v", "").attr("n", "");
+					$( "#toolbar" ).combogrid("clearData");
+					$( "#toolbar" ).combogrid({
+						async:false,
+						url : "<%=rootPath%>/busiMonitor/resultConfig/toolbarList"
+					});
+				}else{
+					$( "#toolbar" ).combogrid({
+						url : "<%=rootPath%>/busiMonitor/resultConfig/toolbarList",
+						width:450,
+						async:false,
+						//autoChoose:true,
+						//设置是否不可用默认可用
+						disabled:false,
+						//参数设置
+				        setParams:function(q) { 
+					      	  var args = {
+					      			REMARK:q
+					          }
+					    	  return args;
+				        },	
+				         //width:按百分比设置宽度	
+						colModel: [{'columnName':'SYS_FUNC_MENU_GROUP_ID',width:'300', 'label':'菜单标识', align:"left", key:true}, 
+						           {'columnName':'REMARK',width:'300', 'label':'菜单备注', align:"left"}],
+						select: function( event, ui ) {
+							$( "#toolbar" ).val( ui.item.REMARK);
+							$( "#toolbar" ).attr("v", ui.item.SYS_FUNC_MENU_GROUP_ID).attr("n", ui.item.REMARK);
+							return false;
+						}
+					});
+					$("#toolbar").val("").attr("v", "").attr("n", "");
+					//$("#toolbar").combogrid("initLoad");	
+				}
+			   
+			   
+			   return;
 			   if(initToolbarGrid == 1){
 				   jQuery('#toolbarGrid').setGridParam({"page":1});
 				   jQuery('#toolbarGrid').setGridParam({"postData":""});
@@ -136,13 +174,17 @@
 					   postData : {"groupId": groupId || "-999999"},
 					   hidegrid:true,
 					   width:710,
-					   autowidth:true,
+					   shrinkToFit:true,
 					   multiselect:false,
 					   mtype:'post',
 					   remoteSort: false,
+					   autowidth:true,
 					   pager:'#toolbarGrid_pager',
 					   colModel:[
-								{label: 'groupId', name:'groupId', width:120, align:'left', sortable:false},  
+								{label: '菜单标识', name:'SYS_FUNC_MENU_GROUP_ID', width:120, align:'left', sortable:false},
+								{label: '菜单备注', name:'REMARK', width:120, align:'left', sortable:false}
+					             
+								/* {label: 'groupId', name:'groupId', width:120, align:'left', sortable:false},  
 								{label: '按钮名称', name:'itemLabel', width:120, align:'left', sortable:false},
 								{label: '按钮事件名', name:'event', width:120, align:'left', sortable:false},
 								{label: '图标', name:'ico', width:120, align:'left', sortable:false},
@@ -150,7 +192,7 @@
 								{label: '排序标识', name:'sortId', width:120, align:'left', sortable:false},
 								{label: '备注', name:'remark', width:120, align:'left', sortable:false},
 								{label: '导入JS路径', name:'importJs', width:120, align:'left', sortable:false},
-								{label: '菜单名称', name:'menuNameCn', width:120, align:'left', sortable:false}
+								{label: '菜单名称', name:'menuNameCn', width:120, align:'left', sortable:false} */
 			    	   ],
 					   mytoolbar : [
 					   		{
@@ -169,6 +211,7 @@
 					   		}
 				       ]
 				   });
+				  jQuery('#toolbarGrid').setGridWidth("700");
 			   }			   
 		   }
 	   </script>
@@ -198,13 +241,18 @@
 		        <label>SQL文本:</label>
 		        <textarea style="height:200px;width:700px;" name="sqlText" id="add_sqlText_id" ></textarea>		        
 		</form>
-		<div class="adminform" >
-			<label>工具栏配置:</label>
-			<div class="group">
-				<table id="toolbarGrid"></table>
-				<div id="toolbarGrid_pager"></div>
-			</div>
-			<div class="group">
+		<div>
+			<label style="display: inline-block;width:140px;text-align: right;">工具栏配置:</label>
+			<input type="text" id="toolbar" value="" v="" style="width:120px"/>
+<!-- 			<div class="group" style="padding-left:15px;width:700px;float:right;"> -->
+<!-- 				<table id="toolbarGrid"></table> -->
+<!-- 				<div id="toolbarGrid_pager"></div> -->
+<!-- 			</div>			 -->
+		</div>
+		<div></div>
+		<div>
+			<label style="display: inline-block;width:140px;text-align: right;">搜索栏配置:</label>
+			<div class="group" style="padding-left:15px;width:700px;float:right;">
 				<table id="searchGrid"></table>
 				<div id="searchGrid_pager"></div>
 			</div>

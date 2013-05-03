@@ -48,6 +48,14 @@ public class ResultConfigController {
 	public Object toolbarList(Invocation inv){
 		return resultConfigService.toolbarList(inv.getRequest());
 	}
+	@Post("toolbarDetail")
+	public Object toolbarDetail(Invocation inv){
+		return resultConfigService.toolbarDetail(inv.getRequest());
+	}
+	@Post("toolbarDetail/add")
+	public Object toolbarListAdd(Invocation inv){
+		return resultConfigService.toolbarList(inv.getRequest());
+	}
 	
 	@Get
 	public String resultConfig(Invocation inv,Paging page){

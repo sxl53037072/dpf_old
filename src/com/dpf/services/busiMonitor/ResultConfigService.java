@@ -35,4 +35,9 @@ public class ResultConfigService {
 		return JSONObject.fromObject(map);
 	}
 	
+	public Object toolbarDetail(HttpServletRequest request){
+		HashMap<String, Object> map = resultConfigDao.toolbarDetail(request);
+		return JSONObject.fromObject(map);
+	}
+	
 }
