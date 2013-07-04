@@ -1,6 +1,5 @@
 // 得到url搜索串
-function getURLSearch(isParent)
-{
+function getURLSearch(isParent){
 	var strSearch ="";
 	if(isParent){
 	 strSearch= window.parent.location.search;
@@ -21,10 +20,24 @@ function getURLSearch(isParent)
 	return ArrayUrl;
 }
 
-function getUrlParam()
-{
+function getUrlParam(){
 	return getURLSearch() || {};
 }
+function StringBuffer() {
+    this.__strings__ = new Array;
+}
+
+StringBuffer.prototype.append = function (str) {
+    this.__strings__.push(str);
+};
+
+StringBuffer.prototype.toString = function () {
+    return this.__strings__.join("");
+};
+String.prototype.trim=function(){
+	return jQuery.trim(this);
+}
+
 var ResultGrid = {
 	local : "",
 	GET_DATA_URL : "busiMonitor/result/",
@@ -292,3 +305,28 @@ $.fn.ResultGrid = function(options){
 		alert("缺少 result 参数");
 	}
 };
+
+$.fn.form = function(act, data){
+	if(act == "clear"){
+		$(this).find("[name]").each(function(){			
+			try{
+				$(this).val("");
+			}catch(e){}
+		});
+	}else if(act == "load"){
+		$(this).find("[name]").each(function(){
+			try{
+				$(this).val(data[this.name] || "");
+			}catch(e){}
+		});
+	}
+};
+$.fn.selectDs = function(sql){
+	var data = ResultGrid.getData({url:"busiMonitor/resultConfig/selectDs",data:{"sql": sql}});
+	var $select = $(this);
+	var options = new StringBuffer("");
+	for(var i=0; i<data.length; i++){
+		options.append("<option value='"+data[i].VALUE+"'>"+data[i].NAME+"</option>");
+	}
+	$select.append(options.toString());
+}

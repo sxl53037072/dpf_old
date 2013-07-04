@@ -1,8 +1,8 @@
 @charset "utf-8";
-.toolbar table{
+.toolbarExt table{
 	table-layout: auto;
 }
-.toolbar {
+.toolbarExt {
   background-color: #D6E3F3;
   width: 100%;
   white-space: nowrap;
@@ -10,23 +10,23 @@
 	position: relative;
 }
 
-.toolbar .button_table {
+.toolbarExt .button_table {
   cursor: pointer;
 }
-.toolbar .toolbar_disabled {
+.toolbarExt .toolbar_disabled {
   filter: alpha(opacity = 60);
   -moz-opacity: 0.6;
   opacity: 0.6;
 }
-.toolbar .toolbar_disabled * {
+.toolbarExt .toolbar_disabled * {
   cursor: no-drop;
 }
 
-.toolbar td {
+.toolbarExt td {
   vertical-align: middle;
 }
 
-.toolbar .spacer {
+.toolbarExt .spacer {
   height: 17px;
   font-size: 1px;
   border-left: solid 1px #9AC6FF;
@@ -36,40 +36,40 @@
   padding: 0;
 }
 
-.toolbar .textfield {
+.toolbarExt .textfield {
   padding: 2px 3px 1px 3px;
   background: #FFFFFF url(../image/text-bg.gif) repeat-x 0 0;
   border: 1px solid #B5B8C8;
   width: 140px;
 }
 
-.toolbar .b_left {
+.toolbarExt .b_left {
   width: 3px;
 }
 
-.toolbar .b_right {
+.toolbarExt .b_right {
   width: 3px;
 }
 
-.toolbar .b_center {
+.toolbarExt .b_center {
 	
 }
 
-.toolbar .over .b_left {
+.toolbarExt .over .b_left {
   background: url(../image/Toolbar/tb_border.gif) no-repeat 0 0;
   width: 3px;
 }
 
-.toolbar .over .b_right {
+.toolbarExt .over .b_right {
   background: url(../image/Toolbar/tb_border.gif) no-repeat 0 -21px;
   width: 3px;
 }
 
-.toolbar .over .b_center {
+.toolbarExt .over .b_center {
   background: url(../image/Toolbar/tb_border.gif) repeat-x 0 -42px;
 }
 
-.toolbar .b_center a {
+.toolbarExt .b_center a {
 	display:block;
 	vertical-align:middle;
 	padding-top: 3px;
@@ -83,28 +83,28 @@
 	color:#333;
 }
 
-.toolbar .down .b_left {
+.toolbarExt .down .b_left {
   background: url(../image/Toolbar/tb_border.gif) no-repeat 0 -63px;
 }
 
-.toolbar .down .b_right {
+.toolbarExt .down .b_right {
   background: url(../image/Toolbar/tb_border.gif) no-repeat 0 -84px;
 }
 
-.toolbar .down .b_center {
+.toolbarExt .down .b_center {
   background: url(../image/Toolbar/tb_border.gif) repeat-x 0 -105px;
 }
 
-.toolbar .filterTable {
+.toolbarExt .filterTable {
 	position: absolute;
 	right:2px;
 	top:2px;
 }
-.toolbar .filterTable tr,td,a {
+.toolbarExt .filterTable tr,td,a {
 	cursor: pointer;
 }
 
-.toolbar .filter-spacer {
+.toolbarExt .filter-spacer {
   height: 21px;
   font-size: 1px;
   border-left: solid 1px #84A4CE;
@@ -114,15 +114,15 @@
   padding: 0;
 }
 
-.toolbar .border-center-active {
+.toolbarExt .border-center-active {
 	background: url(../image/Toolbar/tb_border.gif) repeat-x 0px -105px !important;
 }
 
-.toolbar .border-left-active {
+.toolbarExt .border-left-active {
   background: url(../image/Toolbar/tb_border.gif) no-repeat 0 -63px !important;
 }
 
-.toolbar .border-right-active {
+.toolbarExt .border-right-active {
   background: url(../image/Toolbar/tb_border.gif) no-repeat 0 -84px !important;
 }
 

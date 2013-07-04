@@ -60,14 +60,10 @@ border:0
  .adminform label, .adminform input, .adminform button, .adminform select, .adminform textarea {
 	font-size:12px;
 	font-weight:normal;
-	line-height:20px
+	line-height:20px;
 }
 .adminform input, .adminform button, .adminform select, .adminform textarea {
 	font-family:"Helvetica Neue", Helvetica, Arial, sans-serif
-}
-label {
-	display:block;
-	margin-bottom:5px
 }
 .adminform select, .adminform textarea, .adminform input[type="text"], .adminform input[type="password"], .adminform input[type="datetime"], .adminform input[type="datetime-local"], .adminform input[type="date"], .adminform input[type="month"], .adminform input[type="time"], .adminform input[type="week"], .adminform input[type="number"], .adminform input[type="email"], .adminform input[type="url"], .adminform input[type="search"], .adminform input[type="tel"], .adminform input[type="color"], .adminform .uneditable-input {
 	display:inline-block;
@@ -122,7 +118,7 @@ transition:border linear .2s, box-shadow linear .2s
 	line-height:28px
 }
 .adminform select {
-	width:206px;
+	width:220px;
 	background-color:#fff;
 	border:1px solid #ccc
 }
@@ -134,3 +130,5 @@ transition:border linear .2s, box-shadow linear .2s
 	outline:5px auto -webkit-focus-ring-color;
 	outline-offset:-2px
 }
+
+

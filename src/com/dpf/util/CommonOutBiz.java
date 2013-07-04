@@ -940,7 +940,7 @@ public class CommonOutBiz {
 	 * @return List<HashMap<String, String>>返回类型
 	 * @throws
 	 */
-	public void queryResult(HttpServletRequest request,
+	public static void queryResult(HttpServletRequest request,
 			HttpServletResponse response, String querySelect, Object[] queryParam)
 			throws Exception {
 		List<HashMap<String, String>> list = queryResult(querySelect,
@@ -963,7 +963,7 @@ public class CommonOutBiz {
 	 * @return List<HashMap<String,Object>> 返回类型
 	 * @throws
 	 */
-	public HashMap<String, Object> execCall(String callName,
+	public static HashMap<String, Object> execCall(String callName,
 			Object[] callParam) throws Exception {
 		Connection con = null;
 		try {

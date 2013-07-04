@@ -24,7 +24,7 @@ Toolbar.prototype = {
 init:function () {
   //工具按钮层
   this.toolbar = $('<DIV></DIV>');
-  this.toolbar.addClass('toolbar');
+  this.toolbar.addClass('toolbarExt');
   if (this.border != 'none') {
     this.toolbar.css('border-' + this.border, 'solid 1px #8DB2E3');
   }

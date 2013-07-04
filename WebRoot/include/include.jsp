@@ -25,9 +25,9 @@ String baseJsPath = "full";
 <script type="text/javascript" src="<%=rootPath%>/js/<%=baseJsPath %>/jquery-combogrid/plugin/jquery.ui.combogrid-1.6.2.js"></script>
 <script type="text/javascript" src="<%=rootPath%>/js/<%=baseJsPath %>/global.js"></script>
 
-<link rel="stylesheet" type="text/css"	href="<%=rootPath%>/js/<%=baseJsPath %>/jqGrid/themes/redmond/jquery-ui-1.8.2.custom.css" />
+<link rel="stylesheet" type="text/css" href="<%=rootPath%>/js/<%=baseJsPath %>/jqGrid/themes/redmond/jquery-ui-1.8.2.custom.css" />
 <%-- <link rel="stylesheet" type="text/css"	href="<%=rootPath%>/js/<%=baseJsPath %>/jquery-ui/themes/base/jquery-ui.css" /> --%>
-<link rel="stylesheet" type="text/css"	href="<%=rootPath%>/js/<%=baseJsPath %>/jqGrid/themes/ui.jqgrid.css" />
+<link rel="stylesheet" type="text/css" href="<%=rootPath%>/js/<%=baseJsPath %>/jqGrid/themes/ui.jqgrid.css" />
 <link rel="stylesheet" type="text/css" href="<%=rootPath%>/themes/default/validationEngine.jquery.css" />
 <link rel="stylesheet" type="text/css" href="<%=rootPath%>/js/<%=baseJsPath %>/toolbar/css/core.css" />
 <link rel="stylesheet" type="text/css" href="<%=rootPath%>/js/<%=baseJsPath %>/toolbar/css/Toolbar.css" />

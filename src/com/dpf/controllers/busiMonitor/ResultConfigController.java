@@ -13,6 +13,7 @@ import com.dpf.domain.Paging;
 import com.dpf.services.busiMonitor.ResultConfigService;
 
 import net.paoding.rose.web.Invocation;
+import net.paoding.rose.web.annotation.Param;
 import net.paoding.rose.web.annotation.Path;
 import net.paoding.rose.web.annotation.rest.Get;
 import net.paoding.rose.web.annotation.rest.Post;
@@ -44,6 +45,17 @@ public class ResultConfigController {
 		}
 		return null;
 	}
+	@Post("del")
+	public Object delConfig(Invocation inv){
+		try {
+			resultConfigService.delConfig(inv.getRequest());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
 	@Post("toolbarList")
 	public Object toolbarList(Invocation inv){
 		return resultConfigService.toolbarList(inv.getRequest());
@@ -54,7 +66,32 @@ public class ResultConfigController {
 	}
 	@Post("toolbarDetail/add")
 	public Object toolbarListAdd(Invocation inv){
-		return resultConfigService.toolbarList(inv.getRequest());
+		return null;
+	}
+	
+	@Post("searchList")
+	public Object searchList(Invocation inv){
+		return resultConfigService.searchList(inv.getRequest());
+	}
+	@Post("searchList/add")
+	public Object addSearchList(Invocation inv) throws Exception{
+		resultConfigService.addSearch(inv.getRequest());
+		return null;
+	}
+	@Post("searchList/edit")
+	public Object editSearchList(Invocation inv) throws Exception{
+		resultConfigService.editSearch(inv.getRequest());
+		return null;
+	}
+	@Post("searchList/del")
+	public Object delSearchList(Invocation inv) throws Exception{
+		resultConfigService.deleteSearch(inv.getRequest());
+		return null;
+	}
+	
+	@Post("selectDs")
+	public Object selectDs(Invocation inv) throws Exception{
+		return resultConfigService.selectDs(inv.getRequest());
 	}
 	
 	@Get

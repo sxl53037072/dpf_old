@@ -30,7 +30,8 @@ $.widget( "cg.combogrid", {
 		delay: 300,
 		rows : 10,
 		mustMatch: false,
-		key: "",
+		fieldText: "",
+		fieldValue : "",
 		addClass:null,
 		addId:null,
 		minLength: 0,
@@ -479,12 +480,16 @@ $.widget( "cg.combogrid", {
 						}, 1);
 					}
 
-					if(self.options.key) {
-						self.setValue(item[self.options.key]);
+					if(self.options.fieldValue) {
+						self.setValue(item[self.options.fieldValue]);
+					}
+					
+					if(self.options.fieldText) {
+						self.element.val(item[self.options.fieldText]);
 					}
 					
 					if ( false !== self._trigger( "select", event, { item: item } ) ) {
-						self.element.val( item.value );
+						//self.element.val( item.value );
 					}
 					// reset the term after the select event
 					// this allows custom select handling to work properly
@@ -906,7 +911,7 @@ $.widget( "cg.combogrid", {
 		$("<table cellspacing='0' cellpadding='0' border='0' class='cg-navTable'>"
 			+"<tbody>"
 				+"<td align='left' style='white-space: pre;' id='cg-keynav-center'>"
-				+"<table cellspacing='0' cellpadding='0' border='0' class='cg-pg-table' >"
+				+"<table cellspacing='0' cellpadding='0' border='0' class='cg-pg-table'>"
 				+"<tbody>"
 					+"<tr>"
 						+"<td class='cg-pg-button ui-corner-all cg-state-disabled cg-keynav-first " +self.element.attr('id') + "'>"

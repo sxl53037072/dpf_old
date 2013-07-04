@@ -174,4 +174,33 @@ public class DBCtrl {
 		}
 		close(conn, rs);
 	}
+	/**
+	 * 功能:	事务回调接口， 可实现DBCtrlTransaction接口完成事务的处理
+	 *
+	 * @param transaction
+	 * @throws Exception 
+	 */
+	public static void transactionConn(DBCtrlTransaction transaction) throws Exception{
+		Connection con = null;
+		try{
+			con = DBCtrl.getConnection();
+			con.setAutoCommit(false);
+			transaction.callback(con);
+			con.commit();
+		}catch(SQLException e){
+			try {
+				con.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}finally{
+			try {
+				con.setAutoCommit(true);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			DBCtrl.close(con);
+		}
+	}
 }

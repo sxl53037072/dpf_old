@@ -24,35 +24,37 @@ public class QueueThreadPool {
 	private static Logger logger = Logger.getLogger(QueueThreadPool.class);
 	private static BlockingQueue<QueueMethod> linkedQueue = new LinkedBlockingQueue<QueueMethod>();
 	private static ScheduledExecutorService scheduledExecutorService;
+	private static ScheduledExecutorService scheduledExecutorService1;
 	//轮循时间 [毫秒]
-	private static String queueTime = "1";
+	private static String queueTime = "1000";
 	static{
-		scheduledExecutorService = Executors.newScheduledThreadPool(10);
-		scheduledExecutorService.scheduleWithFixedDelay(new Runnable() {
+		scheduledExecutorService = Executors.newScheduledThreadPool(1);
+		scheduledExecutorService1 = Executors.newScheduledThreadPool(10);//内部任务线程池
+		Thread thread = new Thread(new Runnable() {
 			public void run() {
 				if(!linkedQueue.isEmpty()){
 					try {
 						logger.debug("队列数="+linkedQueue.size());
-						QueueMethod method = linkedQueue.take();
-						method.callback();
+						final QueueMethod method = linkedQueue.take();
+						scheduledExecutorService1.schedule(new Runnable() {
+							public void run() {
+								method.callback();
+							}
+						}, 0, TimeUnit.MILLISECONDS);
+						
 					} catch (InterruptedException e) {
 						logger.error("exception queue take error: " + e.getMessage());
 					}					
 				}
 			}
-		}, 1000, Long.parseLong(queueTime), TimeUnit.MILLISECONDS);
+		});
+		thread.setDaemon(true);
+		scheduledExecutorService.scheduleAtFixedRate(thread, 0, Long.parseLong(queueTime), TimeUnit.MILLISECONDS);
 	}
 	
 	
 	/**
 	 * 添加接口至跟踪队列
-	 * 调用方式：
-	 *     QueueThreadPool.putQueue(new QueueMethod(){
-     *			public void callback(){
-     *				//执行动作
-     *			}
-     *		});   
-	 * 
 	 * @param e
 	 */
 	public static void putQueue(QueueMethod e) {

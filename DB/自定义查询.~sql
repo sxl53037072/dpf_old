@@ -2,15 +2,23 @@
 SELECT T.*,T.ROWID FROM GET_VALUE_CFG T;
 SELECT T.*,T.ROWID FROM SQL_CFG T;
 --配置字段及显示
-SELECT T.*,T.ROWID FROM GET_VALUE_SHOW_CFG T where t.get_value_cfg_id = 7;
+SELECT T.*,T.ROWID FROM GET_VALUE_SHOW_CFG T where t.get_value_cfg_id = 35;
 SELECT T.*,T.ROWID FROM GET_VALUE_CFG_FIELD T where t.get_value_cfg_id = 7;
 --搜索栏
 SELECT T.*,T.ROWID FROM COMPONENT T;
-SELECT T.*,T.ROWID FROM SQL_PARAM_CFG T where t.sql_id = 7 order by sort_id;
+SELECT T.*,T.ROWID FROM SQL_PARAM_CFG T where t.sql_id = 35 order by sort_id;
 --工具栏
-SELECT T.*,T.ROWID FROM SYS_FUNC_MENU_GROUP T;
+SELECT T.*,T.ROWID FROM SYS_FUNC_MENU_GROUP T  where t.SYS_FUNC_MENU_GROUP_ID = 2015;
 SELECT T.*,T.ROWID FROM SYS_FUNC_MENU T where t.func_menu_group_id = 2015;
 SELECT T.*,T.ROWID FROM SYS_FUNC_MENU_ITEM T WHERE T.FUNC_MENU_GROUP_ID = 2015 ORDER BY T.SORT_ID;
+
+-- Create sequence 
+create sequence SEQ_SQL_PARAM_CFG
+minvalue 1
+maxvalue 999999999999999
+start with 1
+increment by 1
+nocache;
 
 
 
@@ -105,20 +113,63 @@ INSERT INTO SQL_CFG(SQL_ID,SQL_TEXT,SQL_TYPE,CURSOR_INDEX,ID_COL,REMARK)VALUES(?
 UPDATE SQL_CFG
 SET SQL_ID = ?,SQL_TEXT = ?,SQL_TYPE = ?,CURSOR_INDEX = ?,ID_COL = ?,REMARK = ?
 WHERE SQL_ID = ?;
+--GET_VALUE_SHOW_CFG
+INSERT INTO GET_VALUE_SHOW_CFG(GET_VALUE_CFG_ID,TOOLBAR_MENU_ID)VALUES(?, ?);
+UPDATE GET_VALUE_SHOW_CFG SET TOOLBAR_MENU_ID = ? WHERE GET_VALUE_CFG_ID = ?;
+
  
 --获取工具栏配置
-SELECT A.SYS_FUNC_MENU_GROUP_ID AS "groupId",
-       C.ITEM_LABEL AS "itemLabel",
-       C.EVENT AS "event",
-       C.Ico as "ico",
-       decode(c.is_line, '0BT', '是', '否') as "isLineName",
-       c.is_line as "isLine",
-       c.sort_id as "sortId",
-       c.remark as "remark",
-       a.import_js as "importJs",
-       b.menu_name_cn as "menuNameCn"
+SELECT A.SYS_FUNC_MENU_GROUP_ID, A.REMARK FROM SYS_FUNC_MENU_GROUP A;
+
+--获取工具栏菜单明细
+SELECT A.SYS_FUNC_MENU_GROUP_ID,
+       C.ITEM_LABEL,
+       C.EVENT,
+       C.ICO,
+       DECODE(C.IS_LINE, '0BT', '是', '否') AS "ISLINENAME",
+       C.IS_LINE,
+       C.SORT_ID,
+       C.REMARK,
+       A.IMPORT_JS,
+       B.MENU_NAME_CN
   FROM SYS_FUNC_MENU_GROUP A, SYS_FUNC_MENU B, SYS_FUNC_MENU_ITEM C
  WHERE A.SYS_FUNC_MENU_GROUP_ID = B.FUNC_MENU_GROUP_ID
    AND B.FUNC_MENU_GROUP_ID = C.FUNC_MENU_GROUP_ID
-   AND A.SYS_FUNC_MENU_GROUP_ID = 2015
+   ORDER BY A.SYS_FUNC_MENU_GROUP_ID,C.SORT_ID
+   
+--获取搜索控件
+SELECT T.SQL_ID,
+       T.PARAM_NAME,
+       T.COMP_ID,
+       (SELECT COMP_LABEL FROM COMPONENT WHERE COMP_ID = T.COMP_ID) COMP_NAME,
+       T.PARAM_TYPE,
+       T.DATA_TYPE,
+       T.IS_MULTIPLE,
+       T.COMP_DS,
+       T.COMP_CFG,
+       T.PARAM_LABEL,
+       T.SORT_ID
+  FROM SQL_PARAM_CFG T
+ where t.sql_id = ?
+ order by sort_id;
+INSERT INTO SQL_PARAM_CFG
+  (SQL_ID, PARAM_NAME, COMP_ID, COMP_DS, COMP_CFG, PARAM_LABEL, SQL_ID)
+VALUES
+  (?, ?, ?, ?, ?, ?, ?);
+UPDATE SQL_PARAM_CFG
+   SET SQL_ID      = ?,
+       PARAM_NAME  = ?,
+       COMP_ID     = ?,
+       COMP_DS     = ?,
+       COMP_CFG    = ?,
+       PARAM_LABEL = ?,
+       SQL_ID      = ?
+ WHERE SQL_ID = ? AND PARAM_NAME = ?;
+DELETE FROM SQL_PARAM_CFG WHERE SQL_ID = ? AND PARAM_NAME = ?;
+  
+
+ 
+ SELECT COMP_LABEL NAME,COMP_ID VALUE FROM COMPONENT;
+
+      
 
