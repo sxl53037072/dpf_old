@@ -38,7 +38,7 @@ import org.apache.log4j.Logger;
  * JSON对象输出操作类
  * 
  */
-public class CommonOutBiz {
+public class CommonOutBiz { 
 	private static final Logger LOGGER = Logger.getLogger(CommonOutBiz.class);
 
 	public static final List<String> colorList = new ArrayList<String>();
